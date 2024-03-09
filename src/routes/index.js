@@ -1,10 +1,19 @@
 var express = require('express');
 var router = express.Router();
 
-/* GET home page. */
 router.get('/', function (req, res, next) {
+    res.redirect('/api/info');
+});
+
+router.get('/api', function (req, res, next) {
+    res.redirect('/api/info');
+});
+
+router.get('/api/info', function (req, res, next) {
     res.json({
-        title: 'Express'
+        name: 'BarberShop API',
+        version: '1.0.0',
+        description: 'API REST for the management of barbershops and their services'
     });
 });
 

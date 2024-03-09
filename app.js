@@ -1,5 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const errorMiddleware  = require('./src/config/errorMiddleware');
 
 // Importando as rotas definidas
 const customerRoutes = require('./src/routes/customerRoutes');
@@ -16,13 +17,10 @@ app.use(bodyParser.json());
 
 // Configurações de rotas
 app.use('/api', customerRoutes);
-app.use('/api', indexRoutes);
+app.use('/', indexRoutes);
 
-// Tratamento de erros básico
-app.use((err, req, res, next) => {
-    console.error(err.stack);
-    res.status(500).send('Something broke!');
-});
+// Middleware de erro
+app.use(errorMiddleware);
 
 // Inicializando o servidor
 app.listen(PORT, () => {
