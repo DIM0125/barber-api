@@ -1,10 +1,14 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const errorMiddleware  = require('./src/config/errorMiddleware');
+const errorHandler = require('./src/middlewares/errorHandler.js');
+
+// Configuração das variáveis de ambiente
+require('dotenv').config();
 
 // Importando as rotas definidas
-const customerRoutes = require('./src/routes/customerRoutes');
+const userRoutes = require('./src/routes/userRoutes');
 const indexRoutes = require('./src/routes/index');
+const authRoutes = require('./src/routes/authRoutes');
 
 // Criando a aplicação Express
 const app = express();
@@ -16,11 +20,12 @@ const PORT = process.env.PORT || 3000;
 app.use(bodyParser.json());
 
 // Configurações de rotas
-app.use('/api', customerRoutes);
 app.use('/', indexRoutes);
+app.use('/users', userRoutes);
+app.use('/auth', authRoutes);
 
 // Middleware de erro
-app.use(errorMiddleware);
+app.use(errorHandler);
 
 // Inicializando o servidor
 app.listen(PORT, () => {
