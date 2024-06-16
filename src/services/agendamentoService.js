@@ -1,0 +1,1 @@
+const agendamentoRepository = require('../repositories/agendamentoRepository');

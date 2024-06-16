@@ -1,0 +1,1 @@
+const produtoRepository = require('../repositories/produtoRepository');
