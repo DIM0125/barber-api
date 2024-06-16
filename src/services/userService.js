@@ -29,7 +29,7 @@ async function createUser(userData) {
     } catch (error) {
         return {
             success: false,
-            errors: ['An error occurred while creating the user.']
+            errors: ['Aconteceu um erro durante a criação do usuário.']
         };
     }
 }

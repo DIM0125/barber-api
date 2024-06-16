@@ -13,12 +13,12 @@ async function loginUser(username, password) {
     const user = await userRepository.findByUsername(username);
 
     if (!user) {
-        return { success: false, message: 'Invalid credentials' };
+        return { success: false, message: 'Credenciais inválidas.' };
     }
 
     const passwordMatch = await bcrypt.compare(password, user.password);
     if (!passwordMatch) {
-        return { success: false, message: 'Invalid credentials' };
+        return { success: false, message: 'Credenciais inválidas.' };
     }
 
     const token = generateToken(user);

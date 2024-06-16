@@ -7,13 +7,13 @@
 function validateCreateUser(userData) {
     const errors = [];
     if (!userData.name) {
-        errors.push('Name is required.');
+        errors.push('Um nome deve ser informado.');
     }
     if (userData.name && userData.name.length < 3) {
-        errors.push('Name must be at least 3 characters long.');
+        errors.push('O nome deve ter pelo menos 3 caracteres.');
     }
     if (!userData.email || !/\S+@\S+\.\S+/.test(userData.email)) {
-        errors.push('Email must be a valid email address.');
+        errors.push('O email deve ser um endereço válido.');
     }
     return errors;
 }

@@ -9,7 +9,7 @@ const { sendSuccess, sendError } = require('../utils/response');
 async function createUser(req, res) {
     const result = await userService.createUser(req.body);
     if (result.success) {
-        sendSuccess(res, 201, { message: 'User successfully created', userId: result.userId });
+        sendSuccess(res, 201, { message: 'Usuário criado com sucesso.', userId: result.userId });
     } else {
         sendError(res, 400, result.errors.join(', '));
     }

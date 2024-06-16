@@ -1,7 +1,7 @@
 const {query} = require('../utils/database');
 const {select, insertInto, update, where, deleteFrom, join} = require('../utils/sqlTemplates');
 
-const tableName = 'users';
+const tableName = 'Usuario';
 
 const userRepository = {
     /**
