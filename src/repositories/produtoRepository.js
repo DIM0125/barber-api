@@ -1,12 +1,12 @@
-const {query} = require('../utils/database');
-const {select, insertInto, update, where, deleteFrom, join} = require('../utils/sqlTemplates');
+const { query } = require('../utils/database');
+const { select, insertInto, update, where, deleteFrom } = require('../utils/sqlTemplates');
 
 const tableName = 'Produto';
 
 const produtoRepository = {
 
     async findById(id) {
-        const sql = `${select(['*'], tableName)} ${where({id}).sql}`;
+        const sql = `${select(['*'], tableName)} ${where({ id_produto: id }).sql}`;
         const results = await query(sql, [id]);
         return results[0];
     },
@@ -23,5 +23,19 @@ const produtoRepository = {
         const sql = insertInto(tableName, columns);
         const result = await query(sql, values);
         return result.insertId;
+    },
+
+    async update(id, productData) {
+        const { sql, values } = update(tableName, productData, { id_produto: id });
+        const result = await query(sql, values);
+        return result.affectedRows;
+    },
+
+    async delete(id) {
+        const sql = `${deleteFrom(tableName)} ${where({ id_produto: id }).sql}`;
+        const result = await query(sql, [id]);
+        return result.affectedRows;
     }
-}
+};
+
+module.exports = produtoRepository;
