@@ -1,86 +1,105 @@
-const {query} = require('../utils/database');
+const {query, withTransaction } = require('../utils/database');
 const {select, insertInto, update, where, deleteFrom, join} = require('../utils/sqlTemplates');
+const pool = require('../config/dbConfig');
 
 const tableName = 'Usuario';
 
 const userRepository = {
-    /**
-     * Busca um usuário por ID.
-     *
-     * @param {number} id - O ID do usuário.
-     * @returns {Promise<Object>} - Os dados do usuário.
-     */
+
     async findById(id) {
-        const sql = `${select(['*'], tableName)} ${where({id}).sql}`;
-        const results = await query(sql, [id]);
+        const sql = `${select(['*'], tableName)} ${where({id_usuario: null}).sql}`;
+        const results = await query(sql, id);
         return results[0];
     },
 
-    /**
-     * Busca um usuário por nome de usuário.
-     *
-     * @param {string} username - O nome de usuário.
-     * @returns {Promise<Object>} - Os dados do usuário.
-     */
     async findByUsername(username) {
-        const sql = `${select(['*'], tableName)} ${where({username}).sql}`;
+        const sql = `${select(['*'], tableName)} ${where({username: null}).sql}`;
         const results = await query(sql, [username]);
         return results[0];
     },
 
-    /**
-     * Busca os barbeiros cadastrados.
-     *
-     * @returns {Promise<Object>} - Os dados do usuário.
-     */
-    async findBarbers() {
-        const userColumns = ['users.id', 'users.name', 'users.email'];
-        const allColumns = [...userColumns]; // adiciona todas as colunas de usuários e se necessário adicione as colunas de perfis
+    async createUsuario(userData, connection) {
+        const colunasUsuario = ['nome', 'email', 'senha'];
+        if(userData.telefone) {
+            colunasUsuario.push('telefone');
+        }
+        
+        const valoresUsuario = [userData.nome, userData.email, userData.senha];
+        
+        if(userData.telefone) {
+            valoresUsuario.push(userData.telefone);
+        }
+        
+        const sqlUsuario = insertInto("Usuario", colunasUsuario);
+        const resultsUsuario = await connection.query(sqlUsuario, valoresUsuario);
 
-        const joins = [
-            {type: 'inner', tableName: 'user_role', on: 'users.id = user_role.user_id'},
-        ];
-
-        const sql = `${select(allColumns, 'users')} ${join(joins)} ${where({'user_role.code': 'BARBER'}).sql}`;
-        return await query(sql);
+        return resultsUsuario[0].insertId;
     },
 
-    /**
-     * Cria um novo usuário.
-     * @param {Object} userData - Os dados do novo usuário.
-     * @returns {Promise<number>} - O ID do novo usuário.
-     */
-    async create(userData) {
-        const columns = Object.keys(userData);
-        const values = Object.values(userData);
-        const sql = insertInto(tableName, columns);
-        const result = await query(sql, values);
-        return result.insertId;
+    async createCliente(userData) {
+        return withTransaction(async (connection) => {
+
+            const usuarioId = await this.createUsuario(userData, connection);
+
+            const sqlCliente = insertInto("Cliente", ['id_cliente']);
+            await connection.query(sqlCliente, usuarioId);
+
+            return usuarioId;
+        });
     },
 
-    /**
-     * Atualiza os dados de um usuário.
-     * @param {number} id - O ID do usuário a ser atualizado.
-     * @param {Object} userData - Os dados a serem atualizados.
-     * @returns {Promise<boolean>} - Resultado da operação.
-     */
-    async updateById(id, userData) {
-        const {sql, values} = update(tableName, userData);
-        const condition = where({id});
-        const finalSql = `${sql} ${condition.sql}`;
-        const finalValues = [...values, id];
-        await query(finalSql, finalValues);
-        return true;
+    async createBarbeiro(userData) {
+        return withTransaction(async (connection) => {
+            
+            const usuarioId = await this.createUsuario(userData, connection);
+
+            const colunasBarbeiro = ['id_barbeiro', 'data_contratacao', 'cpf', 'percentual_comissao'];
+
+            const valoresBarbeiro = [usuarioId, userData.data_contratacao, userData.cpf, userData.percentual_comissao];
+
+            const sqlBarbeiro = insertInto("Barbeiro", colunasBarbeiro);
+            console.log(sqlBarbeiro, valoresBarbeiro);
+            await connection.query(sqlBarbeiro, valoresBarbeiro);
+
+            return usuarioId;
+        });
     },
 
-    /**
-     * Exclui um usuário.
-     * @param {number} id - O ID do usuário a ser excluído.
-     * @returns {Promise<boolean>} - Resultado da operação.
-     */
+    async createRecepcionista(userData) {
+        return withTransaction(async (connection) => {
+
+            const usuarioId = await this.createUsuario(userData, connection);
+
+            const colunasRecepcionista = ['id_recepcionista', 'data_contratacao', 'cpf'];
+
+            const valoresRecepcionista = [usuarioId, userData.data_contratacao, userData.cpf];
+
+            const sqlRecepcionista = insertInto("Recepcionista", colunasRecepcionista);
+            await connection.query(sqlRecepcionista, valoresRecepcionista);
+
+            return usuarioId;
+        });
+    },
+
+    async createGerente(userData) {
+        return withTransaction(async (connection) => {
+
+            const usuarioId = await this.createUsuario(userData, connection);
+
+            const colunasGerente = ['id_gerente', 'data_contratacao', 'cpf'];
+
+            const valoresGerente = [usuarioId, userData.data_contratacao, userData.cpf];
+
+            const sqlGerente = insertInto("Gerente", colunasGerente);
+            await connection.query(sqlGerente, valoresGerente);
+
+            return usuarioId;
+        });
+    },
+
     async deleteById(id) {
-        const sql = `${deleteFrom(tableName)} ${where({id}).sql}`;
-        await query(sql, [id]);
+        const sql = `${deleteFrom(tableName)} ${where({id_usuario: null}).sql}`;
+        await query(sql, id);
         return true;
     }
 };

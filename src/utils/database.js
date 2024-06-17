@@ -7,21 +7,14 @@ const pool = require('../config/dbConfig');
  * @param {Array} [params] - The parameters for the query
  * @returns {Promise} - A promise that resolves with the query results
  */
-function query(sql, params) {
-    return new Promise((resolve, reject) => {
-        pool.getConnection((err, connection) => {
-            if (err) {
-                return reject(err);
-            }
-            connection.query(sql, params, (error, results) => {
-                connection.release();
-                if (error) {
-                    return reject(error);
-                }
-                resolve(results);
-            });
-        });
-    });
+async function query(sql, params) {
+    const connection = await pool.getConnection();
+    try {
+        const [results] = await connection.query(sql, params);
+        return results;
+    } finally {
+        connection.release();
+    }
 }
 
 async function withTransaction(operation) {
@@ -39,4 +32,4 @@ async function withTransaction(operation) {
     }
 }
 
-module.exports = {query};
+module.exports = {query, withTransaction};

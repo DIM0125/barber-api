@@ -6,10 +6,10 @@
  */
 function validateCreateUser(userData) {
     const errors = [];
-    if (!userData.name) {
+    if (!userData.nome) {
         errors.push('Um nome deve ser informado.');
     }
-    if (userData.name && userData.name.length < 3) {
+    if (userData.nome && userData.nome.length < 3) {
         errors.push('O nome deve ter pelo menos 3 caracteres.');
     }
     if (!userData.email || !/\S+@\S+\.\S+/.test(userData.email)) {

@@ -1,5 +1,4 @@
 const mysql = require('mysql2/promise');
-const {create} = require('../repositories/userRepository');
 
 const connection = mysql.createPool({
     host: 'us-cluster-east-01.k8s.cleardb.net',
@@ -13,7 +12,7 @@ const connection = mysql.createPool({
 //     host: 'localhost',
 //     port: 3306,
 //     user: 'root',
-//     password: '',
+//     password: '123',
 //     database: 'toca-da-barba'
 // })
 

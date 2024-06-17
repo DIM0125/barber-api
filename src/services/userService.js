@@ -8,7 +8,7 @@ const userRepository = require('../repositories/userRepository');
  * @param {Object} userData - Dados do usuário para criar.
  * @returns {Object} - O resultado do processo de criação, incluindo erros de validação ou sucesso.
  */
-async function createUser(userData) {
+async function createCliente(userData) {
     const validationErrors = validateCreateUser(userData);
     if (validationErrors.length > 0) {
         return {
@@ -19,9 +19,8 @@ async function createUser(userData) {
 
     try {
         const saltRounds = 10;
-        userData.password = await bcrypt.hash(userData.password, saltRounds);
-
-        const userId = await userRepository.create(userData);
+        userData.senha = await bcrypt.hash(userData.senha, saltRounds);
+        const userId = await userRepository.createCliente(userData);
         return {
             success: true,
             userId
@@ -29,11 +28,123 @@ async function createUser(userData) {
     } catch (error) {
         return {
             success: false,
-            errors: ['Aconteceu um erro durante a criação do usuário.']
+            errors: error
         };
     }
 }
 
+async function createBarbeiro(userData) {
+    const validationErrors = validateCreateUser(userData);
+    if (validationErrors.length > 0) {
+        return {
+            success: false,
+            errors: validationErrors
+        };
+    }
+
+    try {
+        const saltRounds = 10;
+        userData.senha = await bcrypt.hash(userData.senha, saltRounds);
+        const userId = await userRepository.createBarbeiro(userData);
+        return {
+            success: true,
+            userId
+        };
+    } catch (error) {
+        return {
+            success: false,
+            errors: error
+        };
+    }
+}
+
+async function createRecepcionista(userData) {
+    const validationErrors = validateCreateUser(userData);
+    if (validationErrors.length > 0) {
+        return {
+            success: false,
+            errors: validationErrors
+        };
+    }
+
+    try {
+        const saltRounds = 10;
+        userData.senha = await bcrypt.hash(userData.senha, saltRounds);
+        const userId = await userRepository.createRecepcionista(userData);
+        return {
+            success: true,
+            userId
+        };
+    } catch (error) {
+        return {
+            success: false,
+            errors: error
+        };
+    }
+}
+
+async function createGerente(userData) {
+    const validationErrors = validateCreateUser(userData);
+    if (validationErrors.length > 0) {
+        return {
+            success: false,
+            errors: validationErrors
+        };
+    }
+
+    try {
+        const saltRounds = 10;
+        userData.senha = await bcrypt.hash(userData.senha, saltRounds);
+        const userId = await userRepository.createGerente(userData);
+        return {
+            success: true,
+            userId
+        };
+    } catch (error) {
+        return {
+            success: false,
+            errors: error
+        };
+    }
+}
+
+async function getUserById(id) {
+    try{
+        const user = await userRepository.findById(id);
+        return {
+            success: true,
+            user
+        }
+    }
+    catch(error){
+        return {
+            success: false,
+            errors: ['Aconteceu um erro durante a busca do usuário.']
+        }
+    }
+}
+
+async function deleteUserById(id) {
+    try{
+        const user = await userRepository.deleteById(id);
+        return {
+            success: true,
+            user
+        }
+    }
+    catch(error){
+        return {
+            success: false,
+            errors: ['Aconteceu um erro durante a busca do usuário.']
+        }
+    }
+}
+
 module.exports = {
-    createUser
+    createCliente,
+    createBarbeiro,
+    createRecepcionista,
+    createGerente,
+    getUserById,
+    deleteUserById
 };

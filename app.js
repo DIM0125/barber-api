@@ -7,6 +7,9 @@ require('dotenv').config();
 
 // Importando as rotas definidas
 const userRoutes = require('./src/routes/userRoutes');
+const agendamentoRoutes = require('./src/routes/agendamentoRoutes');
+const servicoRoutes = require('./src/routes/servicoRoutes');
+const produtoRoutes = require('./src/routes/produtoRoutes');
 const indexRoutes = require('./src/routes/index');
 const authRoutes = require('./src/routes/authRoutes');
 
@@ -21,7 +24,10 @@ app.use(bodyParser.json());
 
 // Configurações de rotas
 app.use('/', indexRoutes);
-app.use('/users', userRoutes);
+app.use('/usuarios', userRoutes);
+app.use('/agendamentos', agendamentoRoutes);
+// app.use('/servicos', servicoRoutes);
+// app.use('/produtos', produtosRoutes);
 app.use('/auth', authRoutes);
 
 // Middleware de erro
