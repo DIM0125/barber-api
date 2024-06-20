@@ -1,2 +1,4 @@
 {"level":"warn","message":"Handled Error: Expected double-quoted property name in JSON at position 103 - Status: 400","timestamp":"2024-06-16 20:21:35"}
 {"level":"warn","message":"Handled Error: Expected double-quoted property name in JSON at position 139 - Status: 400","timestamp":"2024-06-16 22:21:06"}
+{"level":"warn","message":"Handled Error: Expected double-quoted property name in JSON at position 73 - Status: 400","timestamp":"2024-06-19 13:36:06"}
+{"level":"warn","message":"Handled Error: Expected ',' or '}' after property value in JSON at position 76 - Status: 400","timestamp":"2024-06-19 14:42:26"}

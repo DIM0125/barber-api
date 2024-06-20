@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 const bodyParser = require('body-parser');
 const errorHandler = require('./src/middlewares/errorHandler.js');
 
@@ -18,6 +19,15 @@ const app = express();
 
 // Configuração da porta
 const PORT = process.env.PORT || 3000;
+
+// Configurações do CORS
+const corsOptions = {
+    origin: '*',
+    methods: '*',
+    optionsSuccessStatus: 200,
+};
+
+app.use(cors(corsOptions));
 
 // Middleware para analisar o corpo das requisições JSON
 app.use(bodyParser.json());

@@ -12,10 +12,16 @@ const userRepository = {
         return results[0];
     },
 
-    async findByUsername(username) {
-        const sql = `${select(['*'], tableName)} ${where({username: null}).sql}`;
-        const results = await query(sql, [username]);
-        return results[0];
+    async existsByEmail(email) {
+        const sql = `${select(['id_usuario'], tableName)} ${where({email: null}).sql}`;
+        const results = await query(sql, email);
+        return results.length > 0;
+    },
+
+    async existsByTelefone(telefone) {
+        const sql = `${select(['id_usuario'], tableName)} ${where({telefone: null}).sql}`;
+        const results = await query(sql, telefone);
+        return results.length > 0;
     },
 
     async createUsuario(userData, connection) {
@@ -58,7 +64,6 @@ const userRepository = {
             const valoresBarbeiro = [usuarioId, userData.data_contratacao, userData.cpf, userData.percentual_comissao];
 
             const sqlBarbeiro = insertInto("Barbeiro", colunasBarbeiro);
-            console.log(sqlBarbeiro, valoresBarbeiro);
             await connection.query(sqlBarbeiro, valoresBarbeiro);
 
             return usuarioId;

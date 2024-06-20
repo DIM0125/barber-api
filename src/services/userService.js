@@ -9,7 +9,7 @@ const userRepository = require('../repositories/userRepository');
  * @returns {Object} - O resultado do processo de criação, incluindo erros de validação ou sucesso.
  */
 async function createCliente(userData) {
-    const validationErrors = validateCreateUser(userData);
+    const validationErrors = await validateCreateUser(userData, 'Cliente');
     if (validationErrors.length > 0) {
         return {
             success: false,
@@ -34,7 +34,7 @@ async function createCliente(userData) {
 }
 
 async function createBarbeiro(userData) {
-    const validationErrors = validateCreateUser(userData);
+    const validationErrors = await validateCreateUser(userData, 'Barbeiro');
     if (validationErrors.length > 0) {
         return {
             success: false,
@@ -59,7 +59,7 @@ async function createBarbeiro(userData) {
 }
 
 async function createRecepcionista(userData) {
-    const validationErrors = validateCreateUser(userData);
+    const validationErrors = await validateCreateUser(userData, 'Recepcionista');
     if (validationErrors.length > 0) {
         return {
             success: false,
@@ -84,7 +84,7 @@ async function createRecepcionista(userData) {
 }
 
 async function createGerente(userData) {
-    const validationErrors = validateCreateUser(userData);
+    const validationErrors = await validateCreateUser(userData, 'Gerente');
     if (validationErrors.length > 0) {
         return {
             success: false,
