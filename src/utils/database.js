@@ -11,13 +11,18 @@ async function query(sql, params) {
     const connection = await pool.getConnection();
     try {
         const [results] = await connection.query(sql, params);
-        connection.release();
         return results;
     } finally {
         connection.release();
     }
 }
 
+/**
+ * Execute a database operation within a transaction.
+ *
+ * @param {function} operation - The function representing the database operation
+ * @returns {Promise} - A promise that resolves with the result of the operation
+ */
 async function withTransaction(operation) {
     const connection = await pool.getConnection();
     try {
@@ -33,4 +38,4 @@ async function withTransaction(operation) {
     }
 }
 
-module.exports = {query, withTransaction};
+module.exports = { query, withTransaction };
