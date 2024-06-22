@@ -27,7 +27,7 @@ const createProduct = async (req, res, next) => {
 const getAllProducts = async (req, res, next) => {
     try {
         const products = await produtoService.getAllProducts();
-        return sendSuccess(res, 200, products); // 200 OK
+        return sendSuccess(res, 200, products);
     } catch (error) {
         next(error);
     }
@@ -37,9 +37,9 @@ const getProductById = async (req, res, next) => {
     try {
         const product = await produtoService.getProductById(req.params.id);
         if (!product) {
-            return sendError(res, 404, 'Produto não encontrado'); // 404 Not Found
+            return sendError(res, 404, 'Produto não encontrado');
         }
-        return sendSuccess(res, 200, product); // 200 OK
+        return sendSuccess(res, 200, product);
     } catch (error) {
         next(error);
     }

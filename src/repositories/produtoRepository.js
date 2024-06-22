@@ -35,9 +35,16 @@ const produtoRepository = {
     },
 
     async update(id, productData) {
-        const { sql, values } = update(tableName, productData, { id_produto: id });
-        const result = await query(sql, values);
-        return result.affectedRows;
+        try {
+            const { sql, values } = update(tableName, productData, { id_produto: id });
+            const sqlWithWhere = `${sql} ${where({ id_produto: id }).sql}`;
+    
+            const result = await query(sqlWithWhere, [...Object.values(productData), id]);
+    
+            return result.affectedRows;
+        } catch (error) {
+            throw error;
+        }
     },
 
     async delete(id) {
