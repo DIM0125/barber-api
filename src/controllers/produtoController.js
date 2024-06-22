@@ -3,11 +3,20 @@ const { sendSuccess, sendError } = require('../utils/response');
 
 const createProduct = async (req, res) => {
   try {
-    const productId = await produtoService.createProduct(req.body);
-    return sendSuccess(res, 201, { id_produto: productId }); // 201 Created
+    const { nome, descricao, quantidade_estoque, quantidade_minima } = req.body;
+    const existingProduct = await produtoService.getProductByName(nome);
+
+    if (!existingProduct) {
+      const productId = await produtoService.createProduct({ nome, descricao, quantidade_estoque, quantidade_minima });
+      return sendSuccess(res, 200, { id_produto: productId });
+    } else {
+      const updatedQuantity = existingProduct.quantidade_estoque + quantidade_estoque;
+      await produtoService.updateProduct(existingProduct.id_produto, { quantidade_estoque: updatedQuantity });
+      return sendSuccess(res, 201, 'Quantidade do produto atualizada com sucesso');
+    }
   } catch (error) {
     console.error(error);
-    return sendError(res, 500, 'Erro ao criar o produto'); // 500 Internal Server Error
+    return sendError(res, 500, 'Erro ao criar ou atualizar o produto');
   }
 };
 

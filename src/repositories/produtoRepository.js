@@ -1,11 +1,9 @@
 const { query } = require('../utils/database');
 const { select, insertInto, update, where, deleteFrom } = require('../utils/sqlTemplates');
-const { findGerenteById } = require('./userRepository');
 
 const tableName = 'Produto';
 
 const produtoRepository = {
-
     async findById(id) {
         const sql = `${select(['*'], tableName)} ${where({ id_produto: id }).sql}`;
         const results = await query(sql, [id]);
@@ -13,13 +11,19 @@ const produtoRepository = {
     },
 
     async findAll() {
-        const sql = `SELECT produto.*, usuario.nome as modificado_por
-                    FROM Produto JOIN
-                    Gerente ON produto.modificado_por = gerente.id_gerente JOIN
-                    Usuario ON id_gerente = id_usuario`;
+        const sql = `
+            SELECT Produto.*, Usuario.nome as modificado_por
+            FROM Produto
+            LEFT JOIN Usuario ON Produto.modificado_por = Usuario.id_usuario;
+        `;
         let results = await query(sql);
-
         return results;
+    },
+
+    async findByName(nome) {
+        const sql = `${select(['*'], tableName)} ${where({ nome }).sql}`;
+        const results = await query(sql, [nome]);
+        return results[0];
     },
 
     async create(productData) {
