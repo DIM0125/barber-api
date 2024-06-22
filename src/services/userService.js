@@ -140,11 +140,28 @@ async function deleteUserById(id) {
     }
 }
 
+async function getClients() {
+    try{
+        const clients = await userRepository.findClients();
+        return {
+            success: true,
+            clients
+        }
+    }
+    catch(error){
+        return {
+            success: false,
+            errors: ['Aconteceu um erro durante a busca dos clientes.']
+        }
+    }
+}
+
 module.exports = {
     createCliente,
     createBarbeiro,
     createRecepcionista,
     createGerente,
     getUserById,
-    deleteUserById
+    deleteUserById,
+    getClients
 };

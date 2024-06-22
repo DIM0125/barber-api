@@ -10,13 +10,13 @@ const bcrypt = require('bcrypt');
  * @returns {Object} - Um objeto contendo o resultado da operação.
  */
 async function loginUser(username, password) {
-    const user = await userRepository.findByUsername(username);
+    const user = await userRepository.findByEmail(username);
 
     if (!user) {
         return { success: false, message: 'Credenciais inválidas.' };
     }
 
-    const passwordMatch = await bcrypt.compare(password, user.password);
+    const passwordMatch = await bcrypt.compare(password, user.senha);
     if (!passwordMatch) {
         return { success: false, message: 'Credenciais inválidas.' };
     }

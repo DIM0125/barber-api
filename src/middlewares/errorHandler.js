@@ -13,6 +13,7 @@ const {sendError} = require('../utils/response');
  */
 function errorHandler(err, req, res, next) {
     const statusCode = err.statusCode || 500;
+    console.log(statusCode);
 
     if (statusCode === 500) {
         logger.error('Internal Server Error: %o', err);

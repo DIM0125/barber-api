@@ -31,6 +31,11 @@ const userRepository = {
         return result[0];
     },
 
+    async findClients() {
+        const sql = `SELECT * FROM Usuario u JOIN Cliente c ON id_usuario = id_cliente`;
+        return await query(sql);
+    },
+
     async existsByEmail(email) {
         const sql = `${select(['id_usuario'], tableName)} ${where({email: null}).sql}`;
         const results = await query(sql, email);
@@ -48,13 +53,13 @@ const userRepository = {
         if(userData.telefone) {
             colunasUsuario.push('telefone');
         }
-        
+
         const valoresUsuario = [userData.nome, userData.email, userData.senha];
-        
+
         if(userData.telefone) {
             valoresUsuario.push(userData.telefone);
         }
-        
+
         const sqlUsuario = insertInto("Usuario", colunasUsuario);
         const resultsUsuario = await connection.query(sqlUsuario, valoresUsuario);
 
@@ -75,7 +80,7 @@ const userRepository = {
 
     async createBarbeiro(userData) {
         return withTransaction(async (connection) => {
-            
+
             const usuarioId = await this.createUsuario(userData, connection);
 
             const colunasBarbeiro = ['id_barbeiro', 'data_contratacao', 'cpf', 'percentual_comissao'];
@@ -125,6 +130,12 @@ const userRepository = {
         const sql = `${deleteFrom(tableName)} ${where({id_usuario: null}).sql}`;
         await query(sql, id);
         return true;
+    },
+
+    async findByEmail(email) {
+        const sql = `select * from Usuario where email = ?`;
+        const results = await query(sql, email);
+        return results[0];
     }
 };
 

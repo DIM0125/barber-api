@@ -23,7 +23,7 @@ async function validateCreateUser(userData, tipoUsuario) {
         errors.push('O email deve ser um endereço válido.');
     }
 
-    if(!userData.telefone || !checkTelefoneMask(userData.telefone)) {
+    if(userData.telefone && !checkTelefoneMask(userData.telefone)) {
         errors.push('O telefone deve ter o formato (xx) xxxxx-xxxx.');
     }
 
@@ -38,7 +38,7 @@ async function validateCreateUser(userData, tipoUsuario) {
 
 function checkTelefoneMask(telefone) {
     const regex = /^(\(\d{2}\))\s*\d{5}-\d{4}$/;
-    
+
     return regex.test(telefone);
 }
 

@@ -1,5 +1,5 @@
 const userService = require('../services/userService');
-const { sendSuccess, sendError } = require('../utils/response');
+const {sendSuccess, sendError} = require('../utils/response');
 
 /**
  * Controlador para criar um usuário.
@@ -9,16 +9,25 @@ const { sendSuccess, sendError } = require('../utils/response');
 async function createCliente(req, res) {
     const result = await userService.createCliente(req.body);
     if (result.success) {
-        sendSuccess(res, 201, { message: 'Usuário criado com sucesso.', userId: result.userId });
+        sendSuccess(res, 201, {message: 'Usuário criado com sucesso.', userId: result.userId});
     } else {
         sendError(res, 400, result.errors);
+    }
+}
+
+async function getClients(req, res) {
+    const result = await userService.getClients();
+    if (result.success) {
+        sendSuccess(res, 200, result.clients);
+    } else {
+        sendError(res, 404, result.errors);
     }
 }
 
 async function createBarbeiro(req, res) {
     const result = await userService.createBarbeiro(req.body);
     if (result.success) {
-        sendSuccess(res, 201, { message: 'Usuário criado com sucesso.', userId: result.userId });
+        sendSuccess(res, 201, {message: 'Usuário criado com sucesso.', userId: result.userId});
     } else {
         sendError(res, 400, result.errors);
     }
@@ -27,7 +36,7 @@ async function createBarbeiro(req, res) {
 async function createRecepcionista(req, res) {
     const result = await userService.createRecepcionista(req.body);
     if (result.success) {
-        sendSuccess(res, 201, { message: 'Usuário criado com sucesso.', userId: result.userId });
+        sendSuccess(res, 201, {message: 'Usuário criado com sucesso.', userId: result.userId});
     } else {
         sendError(res, 400, result.errors);
     }
@@ -36,14 +45,13 @@ async function createRecepcionista(req, res) {
 async function createGerente(req, res) {
     const result = await userService.createGerente(req.body);
     if (result.success) {
-        sendSuccess(res, 201, { message: 'Usuário criado com sucesso.', userId: result.userId });
+        sendSuccess(res, 201, {message: 'Usuário criado com sucesso.', userId: result.userId});
     } else {
         sendError(res, 400, result.errors);
     }
 }
 
 async function getUserById(req, res) {
-    
     const result = await userService.getUserById(req.params.id);
     if (result.success) {
         sendSuccess(res, 200, result.user);
@@ -55,7 +63,7 @@ async function getUserById(req, res) {
 async function deleteUserById(req, res) {
     const result = await userService.deleteUserById(req.params.id);
     if (result.success) {
-        sendSuccess(res, 200, { message: 'Usuário excluído com sucesso.' });
+        sendSuccess(res, 200, {message: 'Usuário excluído com sucesso.'});
     } else {
         sendError(res, 404, result.errors);
     }
@@ -67,5 +75,6 @@ module.exports = {
     createRecepcionista,
     createGerente,
     getUserById,
-    deleteUserById
+    deleteUserById,
+    getClients
 };
