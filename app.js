@@ -13,6 +13,7 @@ const servicoRoutes = require('./src/routes/servicoRoutes');
 const produtoRoutes = require('./src/routes/produtoRoutes');
 const indexRoutes = require('./src/routes/index');
 const authRoutes = require('./src/routes/authRoutes');
+const barberRoutes = require('./src/routes/barberRoutes');
 const {setupSwagger} = require("./src/config/swagger");
 
 // Criando a aplicação Express
@@ -39,6 +40,7 @@ app.use('/usuarios', userRoutes);
 app.use('/agendamentos', agendamentoRoutes);
 app.use('/produtos', produtoRoutes);
 app.use('/auth', authRoutes);
+app.use('/barber', barberRoutes);
 
 // Configura o Swagger
 setupSwagger(app);

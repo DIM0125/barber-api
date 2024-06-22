@@ -13,6 +13,24 @@ const userRepository = {
         return results[0];
     },
 
+    async saveWorkSchedule(workSchedule) {
+        const sqlInsert = `
+            INSERT INTO Barbeiro_Horarios (id_barbeiro, dia_da_semana, horario_inicio, horario_fim)
+            VALUES (?, ?, ?, ?)
+        `;
+        const { id_barbeiro, dia_da_semana, horario_inicio, horario_fim } = workSchedule;
+        const result = await query(sqlInsert, [id_barbeiro, dia_da_semana, horario_inicio, horario_fim]);
+
+        const insertedId = result.insertId;
+
+        const sqlSelect = `
+          SELECT * FROM Barbeiro_Horarios WHERE id_horario = ?
+        `;
+        const savedItem = await query(sqlSelect, [insertedId]);
+
+        return savedItem[0];
+    },
+
     async findGerenteById(id) {
         const sql = `SELECT * FROM Usuario JOIN Gerente ON id_usuario = id_gerente WHERE id_gerente = ?`;
         const result = await query(sql, id);
@@ -141,6 +159,31 @@ const userRepository = {
         const sql = `select * from Usuario where email = ?`;
         const results = await query(sql, email);
         return results[0];
+    },
+
+    // verificar se já existe um horário cadastrado para o mesmo dia, barbeiro e horário
+    // getWorkScheduleByBarberAndDay
+    async getWorkScheduleByBarberAndDay(barberId, day) {
+        const sql = `SELECT * FROM Barbeiro_Horarios WHERE id_barbeiro = ? AND dia_da_semana = ?`;
+        const results = await query(sql, [barberId, day]);
+        // verificar se já existe um horário cadastrado que entre em conflito com o horário informado
+        if (results.length > 0) {
+            results.forEach(async (item) => {
+                // comparar os horários de início e fim do horário informado com os horários já cadastrados para saber se há conflito
+                const start1 = new Date(item.horario_inicio);
+                const end1 = new Date(item.horario_fim);
+
+                const start2 = new Date(workSchedule.horario_inicio);
+                const end2 = new Date(workSchedule.horario_fim);
+
+                if (start1 <= end2 && start2 <= end1) {
+                    return {
+                        success: false,
+                        error: 'Horário em conflito com horário já cadastrado'
+                    };
+                }
+            });
+        }
     }
 };
 
