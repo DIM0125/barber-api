@@ -22,7 +22,7 @@ async function loginUser(username, password) {
     }
 
     const token = generateToken(user);
-    return { success: true, token };
+    return { success: true, result: {token, user} };
 }
 
 module.exports = { loginUser };

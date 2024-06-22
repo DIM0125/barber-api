@@ -14,7 +14,7 @@ async function login(req, res, next) {
         const result = await loginUser(username, password);
 
         if (result.success) {
-            sendSuccess(res, 200, {token: result.token});
+            sendSuccess(res, 200, result.result);
         } else {
             sendError(res, 401, result.message);
         }
