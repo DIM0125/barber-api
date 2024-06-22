@@ -25,6 +25,22 @@ async function addToWorkSchedule(timeData) {
     }
 }
 
+async function getWorkSchedule(barberId) {
+    const workSchedule = await userRepository.getWorkScheduleByBarberID(barberId);
+    if (workSchedule) {
+        return {
+            success: true,
+            result: workSchedule
+        };
+    } else {
+        return {
+            success: false,
+            message: 'Barber not found'
+        };
+    }
+}
+
 module.exports = {
-    addToWorkSchedule
+    addToWorkSchedule,
+    getWorkSchedule
 };

@@ -1,7 +1,7 @@
-const {query, withTransaction } = require('../utils/database');
+const {query, withTransaction} = require('../utils/database');
 const {select, insertInto, update, where, deleteFrom, join} = require('../utils/sqlTemplates');
 const pool = require('../config/dbConfig');
-const { findByBarbeiroId } = require('./agendamentoRepository');
+const {findByBarbeiroId} = require('./agendamentoRepository');
 
 const tableName = 'Usuario';
 
@@ -18,13 +18,15 @@ const userRepository = {
             INSERT INTO Barbeiro_Horarios (id_barbeiro, dia_da_semana, horario_inicio, horario_fim)
             VALUES (?, ?, ?, ?)
         `;
-        const { id_barbeiro, dia_da_semana, horario_inicio, horario_fim } = workSchedule;
+        const {id_barbeiro, dia_da_semana, horario_inicio, horario_fim} = workSchedule;
         const result = await query(sqlInsert, [id_barbeiro, dia_da_semana, horario_inicio, horario_fim]);
 
         const insertedId = result.insertId;
 
         const sqlSelect = `
-          SELECT * FROM Barbeiro_Horarios WHERE id_horario = ?
+            SELECT *
+            FROM Barbeiro_Horarios
+            WHERE id_horario = ?
         `;
         const savedItem = await query(sqlSelect, [insertedId]);
 
@@ -32,25 +34,36 @@ const userRepository = {
     },
 
     async findGerenteById(id) {
-        const sql = `SELECT * FROM Usuario JOIN Gerente ON id_usuario = id_gerente WHERE id_gerente = ?`;
+        const sql = `SELECT *
+                     FROM Usuario
+                              JOIN Gerente ON id_usuario = id_gerente
+                     WHERE id_gerente = ?`;
         const result = await query(sql, id);
         return result[0];
     },
 
     async findByBarbeiroById(id) {
-        const sql = `SELECT * FROM Usuario JOIN Barbeiro ON id_usuario = id_barbeiro WHERE id_barbeiro = ?`;
+        const sql = `SELECT *
+                     FROM Usuario
+                              JOIN Barbeiro ON id_usuario = id_barbeiro
+                     WHERE id_barbeiro = ?`;
         const result = await query(sql, id);
         return result[0];
     },
 
     async findRecepcionistaById(id) {
-        const sql = `SELECT * FROM Usuario JOIN Recepcionista ON id_usuario = id_recepcionista WHERE id_recepcionista = ?`;
+        const sql = `SELECT *
+                     FROM Usuario
+                              JOIN Recepcionista ON id_usuario = id_recepcionista
+                     WHERE id_recepcionista = ?`;
         const result = await query(sql, id);
         return result[0];
     },
 
     async findClients() {
-        const sql = `SELECT * FROM Usuario u JOIN Cliente c ON id_usuario = id_cliente`;
+        const sql = `SELECT *
+                     FROM Usuario u
+                              JOIN Cliente c ON id_usuario = id_cliente`;
         return await query(sql);
     },
 
@@ -68,13 +81,13 @@ const userRepository = {
 
     async createUsuario(userData, connection) {
         const colunasUsuario = ['nome', 'email', 'senha'];
-        if(userData.telefone) {
+        if (userData.telefone) {
             colunasUsuario.push('telefone');
         }
 
         const valoresUsuario = [userData.nome, userData.email, userData.senha];
 
-        if(userData.telefone) {
+        if (userData.telefone) {
             valoresUsuario.push(userData.telefone);
         }
 
@@ -156,35 +169,20 @@ const userRepository = {
     },
 
     async findByEmail(email) {
-        const sql = `select * from Usuario where email = ?`;
+        const sql = `select *
+                     from Usuario
+                     where email = ?`;
         const results = await query(sql, email);
         return results[0];
     },
 
-    // verificar se já existe um horário cadastrado para o mesmo dia, barbeiro e horário
-    // getWorkScheduleByBarberAndDay
-    async getWorkScheduleByBarberAndDay(barberId, day) {
-        const sql = `SELECT * FROM Barbeiro_Horarios WHERE id_barbeiro = ? AND dia_da_semana = ?`;
-        const results = await query(sql, [barberId, day]);
-        // verificar se já existe um horário cadastrado que entre em conflito com o horário informado
-        if (results.length > 0) {
-            results.forEach(async (item) => {
-                // comparar os horários de início e fim do horário informado com os horários já cadastrados para saber se há conflito
-                const start1 = new Date(item.horario_inicio);
-                const end1 = new Date(item.horario_fim);
-
-                const start2 = new Date(workSchedule.horario_inicio);
-                const end2 = new Date(workSchedule.horario_fim);
-
-                if (start1 <= end2 && start2 <= end1) {
-                    return {
-                        success: false,
-                        error: 'Horário em conflito com horário já cadastrado'
-                    };
-                }
-            });
-        }
-    }
+    async getWorkScheduleByBarberID(barberId) {
+        const sql = `SELECT *
+                     FROM Barbeiro_Horarios
+                     WHERE id_barbeiro = ?`;
+        const results = await query(sql, barberId);
+        return results;
+    },
 };
 
 module.exports = userRepository;

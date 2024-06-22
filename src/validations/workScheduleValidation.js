@@ -19,9 +19,6 @@ async function validateWorkSchedule(workScheduleItem) {
         errors.push('O horário de fim é obrigatório.');
     }
 
-    // verificar se já existe um horário cadastrado para o mesmo dia, barbeiro e horário
-    const existingWorkSchedule = await userRepository.getWorkScheduleByBarberAndDay(workScheduleItem.id_barbeiro, workScheduleItem.dia_da_semana);
-
     return errors;
 }
 
