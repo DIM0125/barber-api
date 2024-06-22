@@ -62,6 +62,7 @@ const userRepository = {
 
         const sqlUsuario = insertInto("Usuario", colunasUsuario);
         const resultsUsuario = await connection.query(sqlUsuario, valoresUsuario);
+        connection.release();
 
         return resultsUsuario[0].insertId;
     },
@@ -73,6 +74,7 @@ const userRepository = {
 
             const sqlCliente = insertInto("Cliente", ['id_cliente']);
             await connection.query(sqlCliente, usuarioId);
+            connection.release();
 
             return usuarioId;
         });
@@ -89,6 +91,7 @@ const userRepository = {
 
             const sqlBarbeiro = insertInto("Barbeiro", colunasBarbeiro);
             await connection.query(sqlBarbeiro, valoresBarbeiro);
+            connection.release();
 
             return usuarioId;
         });
@@ -105,6 +108,7 @@ const userRepository = {
 
             const sqlRecepcionista = insertInto("Recepcionista", colunasRecepcionista);
             await connection.query(sqlRecepcionista, valoresRecepcionista);
+            connection.release();
 
             return usuarioId;
         });
@@ -121,6 +125,7 @@ const userRepository = {
 
             const sqlGerente = insertInto("Gerente", colunasGerente);
             await connection.query(sqlGerente, valoresGerente);
+            connection.release();
 
             return usuarioId;
         });
