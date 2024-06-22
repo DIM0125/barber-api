@@ -41,6 +41,7 @@ app.use('/agendamentos', agendamentoRoutes);
 app.use('/produtos', produtoRoutes);
 app.use('/auth', authRoutes);
 app.use('/barber', barberRoutes);
+app.use('/servicos', servicoRoutes);
 
 // Configura o Swagger
 setupSwagger(app);
