@@ -24,6 +24,33 @@ async function getClients(req, res) {
     }
 }
 
+async function getBarbers(req, res) {
+    const result = await userService.getBarbers();
+    if (result.success) {
+        sendSuccess(res, 200, result.barbers);
+    } else {
+        sendError(res, 404, result.errors);
+    }
+}
+
+async function getReceptionists(req, res) {
+    const result = await userService.getReceptionists();
+    if (result.success) {
+        sendSuccess(res, 200, result.receptionists);
+    } else {
+        sendError(res, 404, result.errors);
+    }
+}
+
+async function getManagers(req, res) {
+    const result = await userService.getManagers();
+    if (result.success) {
+        sendSuccess(res, 200, result.managers);
+    } else {
+        sendError(res, 404, result.errors);
+    }
+}
+
 async function createBarbeiro(req, res) {
     const result = await userService.createBarbeiro(req.body);
     if (result.success) {
@@ -76,5 +103,8 @@ module.exports = {
     createGerente,
     getUserById,
     deleteUserById,
-    getClients
+    getClients,
+    getBarbers,
+    getReceptionists,
+    getManagers
 };

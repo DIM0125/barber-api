@@ -156,6 +156,54 @@ async function getClients() {
     }
 }
 
+async function getBarbers() {
+    try{
+        const barbers = await userRepository.findBarbers();
+        return {
+            success: true,
+            barbers
+        }
+    }
+    catch(error){
+        return {
+            success: false,
+            errors: ['Aconteceu um erro durante a busca dos barbeiros.']
+        }
+    }
+}
+
+async function getReceptionists() {
+    try{
+        const receptionists = await userRepository.findReceptionists();
+        return {
+            success: true,
+            receptionists
+        }
+    }
+    catch(error){
+        return {
+            success: false,
+            errors: ['Aconteceu um erro durante a busca dos recepcionistas.']
+        }
+    }
+}
+
+async function getManagers() {
+    try{
+        const managers = await userRepository.findManagers();
+        return {
+            success: true,
+            managers
+        }
+    }
+    catch(error){
+        return {
+            success: false,
+            errors: ['Aconteceu um erro durante a busca dos gerentes.']
+        }
+    }
+}
+
 module.exports = {
     createCliente,
     createBarbeiro,
@@ -163,5 +211,8 @@ module.exports = {
     createGerente,
     getUserById,
     deleteUserById,
-    getClients
+    getClients,
+    getBarbers,
+    getReceptionists,
+    getManagers
 };

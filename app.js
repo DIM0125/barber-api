@@ -36,9 +36,9 @@ app.use(bodyParser.json());
 
 // Configurações de rotas
 app.use('/', indexRoutes);
-app.use('/usuarios', userRoutes);
+app.use('/users', userRoutes);
 app.use('/agendamentos', agendamentoRoutes);
-app.use('/produtos', produtoRoutes);
+app.use('/products', produtoRoutes);
 app.use('/auth', authRoutes);
 app.use('/barber', barberRoutes);
 

@@ -61,9 +61,22 @@ const userRepository = {
     },
 
     async findClients() {
-        const sql = `SELECT *
-                     FROM Usuario u
-                              JOIN Cliente c ON id_usuario = id_cliente`;
+        const sql = `SELECT * FROM Usuario JOIN Cliente ON id_usuario = id_cliente`;
+        return await query(sql);
+    },
+
+    async findBarbers() {
+        const sql = `SELECT * FROM Usuario JOIN Barbeiro ON id_usuario = id_barbeiro`;
+        return await query(sql);
+    },
+
+    async findReceptionists() {
+        const sql = `SELECT * FROM Usuario JOIN Recepcionista ON id_usuario = id_recepcionista`;
+        return await query(sql);
+    },
+
+    async findManagers() {
+        const sql = `SELECT * FROM Usuario JOIN Gerente ON id_usuario = id_gerente`;
         return await query(sql);
     },
 

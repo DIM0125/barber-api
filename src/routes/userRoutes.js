@@ -67,10 +67,13 @@ const {authenticateToken} = require('../middlewares/authMiddleware');
 router.post('/cliente', authenticateToken, userController.createCliente);
 
 router.get('/clients', authenticateToken, userController.getClients);
+router.get('/managers', authenticateToken, userController.getManagers);
+router.get('/barbers', authenticateToken, userController.getBarbers);
+router.get('/receptionists', authenticateToken, userController.getReceptionists);
 
-router.post('/barbeiro', authenticateToken, userController.createBarbeiro);
-router.post('/recepcionista', authenticateToken, userController.createRecepcionista);
-router.post('/gerente', authenticateToken, userController.createGerente);
+router.post('/barber', authenticateToken, userController.createBarbeiro);
+router.post('/receptionist', authenticateToken, userController.createRecepcionista);
+router.post('/manager', authenticateToken, userController.createGerente);
 router.get('/:id', authenticateToken, userController.getUserById);
 router.put('/:id', authenticateToken, userController.deleteUserById);
 
