@@ -1,5 +1,6 @@
 const { query } = require('../utils/database');
 const { select, insertInto, update, where, deleteFrom } = require('../utils/sqlTemplates');
+const { findGerenteById } = require('./userRepository');
 
 const tableName = 'Produto';
 
@@ -12,8 +13,12 @@ const produtoRepository = {
     },
 
     async findAll() {
-        const sql = `${select(['*'], tableName)}`;
-        const results = await query(sql);
+        const sql = `SELECT produto.*, usuario.nome as modificado_por
+                    FROM Produto JOIN
+                    Gerente ON produto.modificado_por = gerente.id_gerente JOIN
+                    Usuario ON id_gerente = id_usuario`;
+        let results = await query(sql);
+
         return results;
     },
 

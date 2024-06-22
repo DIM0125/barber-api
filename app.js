@@ -37,7 +37,7 @@ app.use('/', indexRoutes);
 app.use('/usuarios', userRoutes);
 app.use('/agendamentos', agendamentoRoutes);
 // app.use('/servicos', servicoRoutes);
-// app.use('/produtos', produtosRoutes);
+app.use('/produtos', produtoRoutes);
 app.use('/auth', authRoutes);
 
 // Middleware de erro

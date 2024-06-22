@@ -1,6 +1,7 @@
 const {query, withTransaction } = require('../utils/database');
 const {select, insertInto, update, where, deleteFrom, join} = require('../utils/sqlTemplates');
 const pool = require('../config/dbConfig');
+const { findByBarbeiroId } = require('./agendamentoRepository');
 
 const tableName = 'Usuario';
 
@@ -10,6 +11,24 @@ const userRepository = {
         const sql = `${select(['*'], tableName)} ${where({id_usuario: null}).sql}`;
         const results = await query(sql, id);
         return results[0];
+    },
+
+    async findGerenteById(id) {
+        const sql = `SELECT * FROM Usuario JOIN Gerente ON id_usuario = id_gerente WHERE id_gerente = ?`;
+        const result = await query(sql, id);
+        return result[0];
+    },
+
+    async findByBarbeiroById(id) {
+        const sql = `SELECT * FROM Usuario JOIN Barbeiro ON id_usuario = id_barbeiro WHERE id_barbeiro = ?`;
+        const result = await query(sql, id);
+        return result[0];
+    },
+
+    async findRecepcionistaById(id) {
+        const sql = `SELECT * FROM Usuario JOIN Recepcionista ON id_usuario = id_recepcionista WHERE id_recepcionista = ?`;
+        const result = await query(sql, id);
+        return result[0];
     },
 
     async existsByEmail(email) {
