@@ -30,7 +30,11 @@ const deleteAgendamento = async (agendamentoId) => {
 
 const getAgendamentosByBarbeiro = async (id) => {
     return await agendamentoRepository.getAgendamentosByBarbeiro(id);
-}
+};
+
+const getAgendamentosByData = async (data) => {
+    return await agendamentoRepository.getAgendamentosByData(data);
+};
 
 module.exports = {
     getAllAgendamentos,
@@ -40,5 +44,6 @@ module.exports = {
     checkServicoExists,
     updateAgendamento,
     deleteAgendamento,
-    getAgendamentosByBarbeiro
+    getAgendamentosByBarbeiro,
+    getAgendamentosByData
 };

@@ -65,11 +65,26 @@ async function getAgendamentosByBarbeiro(req, res) {
     }
 }
 
+async function getAgendamentosByData(req, res) {
+    try {
+        const { data } = req.params;
+        const agendamentos = await agendamentoService.getAgendamentosByData(data);
+        if (agendamentos.length > 0) {
+            sendSuccess(res, 200, agendamentos);
+        } else {
+            sendError(res, 404, 'Nenhum agendamento encontrado para a data fornecida.');
+        }
+    } catch (error) {
+        sendError(res, 500, error.message);
+    }
+}
+
 module.exports = {
     getAllAgendamentos,
     getAgendamentoById,
     createAgendamento,
     updateAgendamento,
     deleteAgendamento,
-    getAgendamentosByBarbeiro
+    getAgendamentosByBarbeiro,
+    getAgendamentosByData
 };

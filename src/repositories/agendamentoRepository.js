@@ -10,7 +10,12 @@ const agendamentoRepository = {
     },
 
     async findAll() {
-        const sql = `SELECT * FROM Agendamento`;
+        const sql = `
+            SELECT a.*, s.id_servico
+            FROM Agendamento a
+            JOIN Agendamento_Servicos asv on a.id_agendamento = asv.id_agendamento
+            JOIN Servico s on asv.id_servico = s.id_servico
+        `;
         const results = await query(sql);
         return results;
     },
@@ -115,6 +120,11 @@ const agendamentoRepository = {
         const sql = `SELECT id_servico FROM Servico WHERE id_servico = ?`;
         const results = await query(sql, [servicoId]);
         return results.length > 0;
+    },
+
+    async getAgendamentosByData(data) {
+        const sql = `SELECT * FROM Agendamento WHERE DATE(horario_agendamento) = ?`;
+        return await query(sql, [data]);
     }
 };
 

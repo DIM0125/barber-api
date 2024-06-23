@@ -283,4 +283,42 @@ router.delete('/:id', authenticateToken, agendamentoController.deleteAgendamento
  */
 router.get('/barbeiro/:id', authenticateToken, agendamentoController.getAgendamentosByBarbeiro);
 
+/**
+ * @swagger
+ * /agendamentos/data/{data}:
+ *   get:
+ *     summary: Retorna todos os agendamentos para uma data específica
+ *     tags: [Agendamentos]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: data
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: date
+ *     responses:
+ *       200:
+ *         description: Lista de agendamentos para a data fornecida
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Agendamento'
+ *       404:
+ *         description: Nenhum agendamento encontrado para a data fornecida
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Nenhum agendamento encontrado para a data fornecida.
+ */
+
+router.get('/data/:data', authenticateToken, agendamentoController.getAgendamentosByData);
+
 module.exports = router;
