@@ -12,7 +12,7 @@ const {authenticateToken} = require('../middlewares/authMiddleware');
 
 /**
  * @swagger
- * /usuarios/cliente:
+ * /users/cliente:
  *   post:
  *     summary: Cria um novo cliente
  *     tags: [Users]

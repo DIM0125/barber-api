@@ -12,7 +12,7 @@ const { authenticateToken } = require('../middlewares/authMiddleware');
 
 /**
  * @swagger
- * /produtos:
+ * /products:
  *   get:
  *     summary: Retorna todos os produtos
  *     tags: [Product]
@@ -31,7 +31,7 @@ const { authenticateToken } = require('../middlewares/authMiddleware');
 
 /**
  * @swagger
- * /produtos:
+ * /products:
  *   post:
  *     summary: Cria um novo produto
  *     tags: [Product]
@@ -73,7 +73,7 @@ const { authenticateToken } = require('../middlewares/authMiddleware');
 
 /**
  * @swagger
- * /produtos/{id}:
+ * /products/{id}:
  *   get:
  *     summary: Retorna um produto por ID
  *     tags: [Product]
@@ -106,7 +106,7 @@ const { authenticateToken } = require('../middlewares/authMiddleware');
 
 /**
  * @swagger
- * /produtos/{id}:
+ * /products/{id}:
  *   put:
  *     summary: Atualiza um produto por ID
  *     tags: [Product]
@@ -161,7 +161,7 @@ const { authenticateToken } = require('../middlewares/authMiddleware');
 
 /**
  * @swagger
- * /produtos/{id}:
+ * /products/{id}:
  *   delete:
  *     summary: Exclui um produto por ID
  *     tags: [Product]

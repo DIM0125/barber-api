@@ -247,6 +247,13 @@ const userRepository = {
         const results = await query(sql, barberId);
         return results;
     },
+
+    async removeWorkSchedule(barberId, workScheduleId) {
+        const sql = `DELETE FROM Barbeiro_Horarios
+                     WHERE id_barbeiro = ? AND id_horario = ?`;
+        const result = await query(sql, [barberId, workScheduleId]);
+        return result.affectedRows > 0;
+    },
 };
 
 module.exports = userRepository;

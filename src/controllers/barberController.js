@@ -1,5 +1,6 @@
 const barberService = require("../services/barberService");
 const {sendSuccess, sendError} = require("../utils/response");
+const {authenticateToken} = require("../middlewares/authMiddleware");
 
 async function addToWorkSchedule(req, res) {
     const result = await barberService.addToWorkSchedule(req.body);
@@ -19,7 +20,17 @@ async function getWorkSchedule(req, res) {
     }
 }
 
+async function removeWorkSchedule(req, res) {
+    const result = await barberService.removeWorkSchedule(req.params.id, req.params.workScheduleId);
+    if (result.success) {
+        sendSuccess(res, 200, result.message);
+    } else {
+        sendError(res, 404, result.message);
+    }
+}
+
 module.exports = {
     addToWorkSchedule,
-    getWorkSchedule
+    getWorkSchedule,
+    removeWorkSchedule
 };
