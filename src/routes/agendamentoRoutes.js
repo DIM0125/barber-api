@@ -247,4 +247,40 @@ router.put('/:id', authenticateToken, agendamentoController.updateAgendamento);
  */
 router.delete('/:id', authenticateToken, agendamentoController.deleteAgendamento);
 
+/**
+ * @swagger
+ * /agendamentos/barbeiro/{id}:
+ *   get:
+ *     summary: Retorna todos os agendamentos de um barbeiro
+ *     tags: [Agendamentos]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: Lista de agendamentos do barbeiro
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Agendamento'
+ *       404:
+ *         description: Nenhum agendamento encontrado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Nenhum agendamento encontrado.
+ */
+router.get('/barbeiro/:id', authenticateToken, agendamentoController.getAgendamentosByBarbeiro);
+
 module.exports = router;

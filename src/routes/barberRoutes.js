@@ -137,4 +137,47 @@ router.post('/:id/add-work-schedule', authenticateToken, barberController.addToW
  */
 router.get('/:id/work-schedule', authenticateToken, barberController.getWorkSchedule);
 
+/**
+ * @swagger
+ * /barber/{id}/work-schedule/{workScheduleId}:
+ *   delete:
+ *     summary: Remove um horário de trabalho do barbeiro
+ *     tags: [Barber]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: ID do barbeiro
+ *       - in: path
+ *         name: workScheduleId
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: ID do horário de trabalho
+ *     responses:
+ *       200:
+ *         description: Horário removido
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Horário removido.
+ *       404:
+ *         description: Horário de trabalho não encontrado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Horário de trabalho não encontrado.
+ */
+router.delete('/:id/work-schedule/:workScheduleId', authenticateToken, barberController.removeWorkSchedule);
+
 module.exports = router;

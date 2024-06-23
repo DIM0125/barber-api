@@ -1,14 +1,10 @@
 const agendamentoService = require('../services/agendamentoService');
-const { sendSuccess, sendError } = require('../utils/response');
+const {sendSuccess, sendError} = require('../utils/response');
 
 async function getAllAgendamentos(req, res) {
     try {
         const agendamentos = await agendamentoService.getAllAgendamentos();
-        if (agendamentos.length > 0) {
-            sendSuccess(res, 200, agendamentos);
-        } else {
-            sendError(res, 404, 'Nenhum agendamento encontrado.');
-        }
+        sendSuccess(res, 200, agendamentos);
     } catch (error) {
         sendError(res, 500, error.message);
     }
@@ -30,7 +26,7 @@ async function getAgendamentoById(req, res) {
 async function createAgendamento(req, res) {
     try {
         const agendamentoId = await agendamentoService.createAgendamento(req.body);
-        sendSuccess(res, 201, { message: 'Agendamento criado com sucesso.', agendamentoId });
+        sendSuccess(res, 201, {message: 'Agendamento criado com sucesso.', agendamentoId});
     } catch (error) {
         sendError(res, 400, error.message);
     }
@@ -50,7 +46,20 @@ async function deleteAgendamento(req, res) {
     try {
         const agendamentoId = req.params.id;
         await agendamentoService.deleteAgendamento(agendamentoId);
-        sendSuccess(res, 200, { message: 'Agendamento excluído com sucesso.' });
+        sendSuccess(res, 200, {message: 'Agendamento excluído com sucesso.'});
+    } catch (error) {
+        sendError(res, 500, error.message);
+    }
+}
+
+async function getAgendamentosByBarbeiro(req, res) {
+    try {
+        const agendamentos = await agendamentoService.getAgendamentosByBarbeiro(req.params.id);
+        if (agendamentos.length > 0) {
+            sendSuccess(res, 200, agendamentos);
+        } else {
+            sendError(res, 404, 'Nenhum agendamento encontrado.');
+        }
     } catch (error) {
         sendError(res, 500, error.message);
     }
@@ -61,5 +70,6 @@ module.exports = {
     getAgendamentoById,
     createAgendamento,
     updateAgendamento,
-    deleteAgendamento
+    deleteAgendamento,
+    getAgendamentosByBarbeiro
 };

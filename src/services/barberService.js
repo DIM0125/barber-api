@@ -40,7 +40,23 @@ async function getWorkSchedule(barberId) {
     }
 }
 
+async function removeWorkSchedule(barberId, workScheduleId) {
+    const result = await userRepository.removeWorkSchedule(barberId, workScheduleId);
+    if (result) {
+        return {
+            success: true,
+            message: 'Work schedule removed'
+        };
+    } else {
+        return {
+            success: false,
+            message: 'Work schedule not found'
+        };
+    }
+}
+
 module.exports = {
     addToWorkSchedule,
-    getWorkSchedule
+    getWorkSchedule,
+    removeWorkSchedule
 };

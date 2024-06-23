@@ -2,7 +2,7 @@ const { query } = require('../utils/database');
 const { insertInto } = require('../utils/sqlTemplates');
 
 const agendamentoRepository = {
-    
+
     async findById(agendamentoId) {
         const sql = `SELECT * FROM Agendamento WHERE id_agendamento = ?`;
         const results = await query(sql, [agendamentoId]);
@@ -84,6 +84,11 @@ const agendamentoRepository = {
 
         const sqlDeleteAgendamento = `DELETE FROM Agendamento WHERE id_agendamento = ?`;
         await query(sqlDeleteAgendamento, [agendamentoId]);
+    },
+
+    async getAgendamentosByBarbeiro(barberId) {
+        const sql = `SELECT * FROM Agendamento WHERE id_barbeiro = ?`;
+        return await query(sql, [barberId]);
     },
 
     async addServicoToAgendamento(agendamentoId, servicoId) {

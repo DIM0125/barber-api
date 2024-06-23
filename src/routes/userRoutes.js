@@ -12,7 +12,7 @@ const {authenticateToken} = require('../middlewares/authMiddleware');
 
 /**
  * @swagger
- * /usuarios/cliente:
+ * /users/cliente:
  *   post:
  *     summary: Cria um novo cliente
  *     tags: [Users]
@@ -64,8 +64,26 @@ const {authenticateToken} = require('../middlewares/authMiddleware');
  *                     type: string
  *                     example: Email já está em uso
  */
-router.post('/cliente', authenticateToken, userController.createCliente);
+router.post('/cliente', userController.createCliente);
 
+/**
+ * @swagger
+ * /users/clients:
+ *   get:
+ *     summary: Retorna a lista de clientes
+ *     tags: [Users]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Lista de clientes
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/User'
+ */
 router.get('/clients', authenticateToken, userController.getClients);
 router.get('/managers', authenticateToken, userController.getManagers);
 router.get('/barbers', authenticateToken, userController.getBarbers);
