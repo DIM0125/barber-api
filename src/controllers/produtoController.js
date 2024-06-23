@@ -3,7 +3,7 @@ const {sendSuccess, sendError} = require('../utils/response');
 
 const createProduct = async (req, res, next) => {
     try {
-        const {nome, descricao, quantidade_estoque, quantidade_minima} = req.body;
+        const {nome, descricao, quantidade_estoque, quantidade_minima, modificado_por} = req.body;
         const existingProduct = await produtoService.getProductByName(nome);
 
         if (!existingProduct) {
@@ -11,12 +11,13 @@ const createProduct = async (req, res, next) => {
                 nome,
                 descricao,
                 quantidade_estoque,
-                quantidade_minima
+                quantidade_minima,
+                modificado_por
             });
             return sendSuccess(res, 200, {id_produto: productId});
         } else {
             const updatedQuantity = existingProduct.quantidade_estoque + quantidade_estoque;
-            await produtoService.updateProduct(existingProduct.id_produto, {quantidade_estoque: updatedQuantity});
+            await produtoService.updateProduct(existingProduct.id_produto, {quantidade_estoque: updatedQuantity, modificado_por: modificado_por});
             return sendSuccess(res, 201, 'Quantidade do produto atualizada com sucesso');
         }
     } catch (error) {

@@ -8,8 +8,8 @@ const userRepository = require('../repositories/userRepository');
  * @param {Object} userData - Dados do usuário para criar.
  * @returns {Object} - O resultado do processo de criação, incluindo erros de validação ou sucesso.
  */
-async function createCliente(userData) {
-    const validationErrors = await validateCreateUser(userData, 'Cliente');
+async function createClient(userData) {
+    const validationErrors = await validateCreateUser(userData);
     if (validationErrors.length > 0) {
         return {
             success: false,
@@ -20,7 +20,7 @@ async function createCliente(userData) {
     try {
         const saltRounds = 10;
         userData.senha = await bcrypt.hash(userData.senha, saltRounds);
-        const userId = await userRepository.createCliente(userData);
+        const userId = await userRepository.createClient(userData);
         return {
             success: true,
             userId
@@ -33,8 +33,8 @@ async function createCliente(userData) {
     }
 }
 
-async function createBarbeiro(userData) {
-    const validationErrors = await validateCreateUser(userData, 'Barbeiro');
+async function createBarber(userData) {
+    const validationErrors = await validateCreateUser(userData);
     if (validationErrors.length > 0) {
         return {
             success: false,
@@ -45,7 +45,7 @@ async function createBarbeiro(userData) {
     try {
         const saltRounds = 10;
         userData.senha = await bcrypt.hash(userData.senha, saltRounds);
-        const userId = await userRepository.createBarbeiro(userData);
+        const userId = await userRepository.createBarber(userData);
         return {
             success: true,
             userId
@@ -58,8 +58,8 @@ async function createBarbeiro(userData) {
     }
 }
 
-async function createRecepcionista(userData) {
-    const validationErrors = await validateCreateUser(userData, 'Recepcionista');
+async function createReceptionist(userData) {
+    const validationErrors = await validateCreateUser(userData);
     if (validationErrors.length > 0) {
         return {
             success: false,
@@ -70,7 +70,7 @@ async function createRecepcionista(userData) {
     try {
         const saltRounds = 10;
         userData.senha = await bcrypt.hash(userData.senha, saltRounds);
-        const userId = await userRepository.createRecepcionista(userData);
+        const userId = await userRepository.createReceptionist(userData);
         return {
             success: true,
             userId
@@ -83,8 +83,8 @@ async function createRecepcionista(userData) {
     }
 }
 
-async function createGerente(userData) {
-    const validationErrors = await validateCreateUser(userData, 'Gerente');
+async function createManager(userData) {
+    const validationErrors = await validateCreateUser(userData);
     if (validationErrors.length > 0) {
         return {
             success: false,
@@ -95,7 +95,7 @@ async function createGerente(userData) {
     try {
         const saltRounds = 10;
         userData.senha = await bcrypt.hash(userData.senha, saltRounds);
-        const userId = await userRepository.createGerente(userData);
+        const userId = await userRepository.createManager(userData);
         return {
             success: true,
             userId
@@ -105,6 +105,22 @@ async function createGerente(userData) {
             success: false,
             errors: error
         };
+    }
+}
+
+async function updateUser(id, userData) {
+    try{
+        const user = await userRepository.updateUser(id, userData);
+        return {
+            success: true,
+            user
+        }
+    }
+    catch(error){
+        return {
+            success: false,
+            errors: ['Aconteceu um erro durante a edição do usuário.']
+        }
     }
 }
 
@@ -205,10 +221,11 @@ async function getManagers() {
 }
 
 module.exports = {
-    createCliente,
-    createBarbeiro,
-    createRecepcionista,
-    createGerente,
+    createClient,
+    createBarber,
+    createReceptionist,
+    createManager,
+    updateUser,
     getUserById,
     deleteUserById,
     getClients,

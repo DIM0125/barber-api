@@ -64,17 +64,18 @@ const {authenticateToken} = require('../middlewares/authMiddleware');
  *                     type: string
  *                     example: Email já está em uso
  */
-router.post('/cliente', authenticateToken, userController.createCliente);
 
 router.get('/clients', authenticateToken, userController.getClients);
 router.get('/managers', authenticateToken, userController.getManagers);
 router.get('/barbers', authenticateToken, userController.getBarbers);
 router.get('/receptionists', authenticateToken, userController.getReceptionists);
 
-router.post('/barber', authenticateToken, userController.createBarbeiro);
-router.post('/receptionist', authenticateToken, userController.createRecepcionista);
-router.post('/manager', authenticateToken, userController.createGerente);
+router.post('/client', userController.createClient);
+router.post('/barber', authenticateToken, userController.createBarber);
+router.post('/receptionist', authenticateToken, userController.createReceptionist);
+router.post('/manager', authenticateToken, userController.createManager);
 router.get('/:id', authenticateToken, userController.getUserById);
-router.put('/:id', authenticateToken, userController.deleteUserById);
+router.put('/:id', authenticateToken, userController.updateUser);
+router.delete('/:id', authenticateToken, userController.deleteUserById);
 
 module.exports = router;

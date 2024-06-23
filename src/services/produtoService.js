@@ -5,7 +5,8 @@ const createProduct = async (productData) => {
   
   if (existingProduct) {
     const updatedQuantity = existingProduct.quantidade_estoque + productData.quantidade_estoque;
-    await produtoRepository.update(existingProduct.id_produto, { quantidade_estoque: updatedQuantity });
+    const updatedDate = existingProduct.data_ultima_modificacao = new Date();
+    await produtoRepository.update(existingProduct.id_produto, { quantidade_estoque: updatedQuantity, data_ultima_modificacao: updatedDate });
     return existingProduct.id_produto;
   } else {
     productData.data_ultima_modificacao = new Date();

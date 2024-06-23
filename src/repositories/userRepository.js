@@ -92,13 +92,33 @@ const userRepository = {
         return results.length > 0;
     },
 
-    async createUsuario(userData, connection) {
-        const colunasUsuario = ['nome', 'email', 'senha'];
+    async existsByCpf(cpf) {
+        const sql = `SELECT id_usuario 
+                        FROM (
+                            SELECT id_usuario, cpf
+                            FROM Usuario 
+                            JOIN Gerente ON id_usuario = id_gerente
+                            UNION
+                            SELECT id_usuario, cpf
+                            FROM Usuario 
+                            JOIN Recepcionista ON id_usuario = id_recepcionista
+                            UNION
+                            SELECT id_usuario, cpf
+                            FROM Usuario 
+                            JOIN Barbeiro ON id_usuario = id_barbeiro
+                        ) AS employees
+                        WHERE cpf = ?;`;
+        const results = await query(sql, cpf);
+        return results.length > 0;
+    },
+
+    async createUser(userData, connection) {
+        const colunasUsuario = ['nome', 'email', 'senha', 'role'];
         if (userData.telefone) {
             colunasUsuario.push('telefone');
         }
 
-        const valoresUsuario = [userData.nome, userData.email, userData.senha];
+        const valoresUsuario = [userData.nome, userData.email, userData.senha, userData.role];
 
         if (userData.telefone) {
             valoresUsuario.push(userData.telefone);
@@ -111,10 +131,10 @@ const userRepository = {
         return resultsUsuario[0].insertId;
     },
 
-    async createCliente(userData) {
+    async createClient(userData) {
         return withTransaction(async (connection) => {
 
-            const usuarioId = await this.createUsuario(userData, connection);
+            const usuarioId = await this.createUser(userData, connection);
 
             const sqlCliente = insertInto("Cliente", ['id_cliente']);
             await connection.query(sqlCliente, usuarioId);
@@ -124,10 +144,10 @@ const userRepository = {
         });
     },
 
-    async createBarbeiro(userData) {
+    async createBarber(userData) {
         return withTransaction(async (connection) => {
 
-            const usuarioId = await this.createUsuario(userData, connection);
+            const usuarioId = await this.createUser(userData, connection);
 
             const colunasBarbeiro = ['id_barbeiro', 'data_contratacao', 'cpf', 'percentual_comissao'];
 
@@ -141,10 +161,10 @@ const userRepository = {
         });
     },
 
-    async createRecepcionista(userData) {
+    async createReceptionist(userData) {
         return withTransaction(async (connection) => {
 
-            const usuarioId = await this.createUsuario(userData, connection);
+            const usuarioId = await this.createUser(userData, connection);
 
             const colunasRecepcionista = ['id_recepcionista', 'data_contratacao', 'cpf'];
 
@@ -158,10 +178,10 @@ const userRepository = {
         });
     },
 
-    async createGerente(userData) {
+    async createManager(userData) {
         return withTransaction(async (connection) => {
 
-            const usuarioId = await this.createUsuario(userData, connection);
+            const usuarioId = await this.createUser(userData, connection);
 
             const colunasGerente = ['id_gerente', 'data_contratacao', 'cpf'];
 
@@ -173,6 +193,37 @@ const userRepository = {
 
             return usuarioId;
         });
+    },
+
+    async updateUser(id, userData) {
+        switch (userData.role) {
+            case "CLIENT":
+                return this.updateClient(id, userData);
+            case "BARBER":
+                return this.updateBarber(id, userData);
+            case "RECEPT":
+                return this.updateReceptionist(id, userData);
+            case "MANAGER":
+                return this.updateManager(id, userData);
+            default:
+                throw new Error("Invalid role");
+        }
+    },
+
+    async updateClient(id, userData) {
+        // TODO
+    },
+
+    async updateBarber(id, userData) {
+        // TODO
+    },
+
+    async updateReceptionist(id, userData) {
+        // TODO
+    },
+
+    async updateManager(id, userData) {
+        // TODO
     },
 
     async deleteById(id) {

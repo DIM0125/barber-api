@@ -6,8 +6,8 @@ const {sendSuccess, sendError} = require('../utils/response');
  * @param {Request} req - O objeto de requisição do Express.
  * @param {Response} res - O objeto de resposta do Express.
  */
-async function createCliente(req, res) {
-    const result = await userService.createCliente(req.body);
+async function createClient(req, res) {
+    const result = await userService.createClient(req.body);
     if (result.success) {
         sendSuccess(res, 201, {message: 'Usuário criado com sucesso.', userId: result.userId});
     } else {
@@ -51,8 +51,8 @@ async function getManagers(req, res) {
     }
 }
 
-async function createBarbeiro(req, res) {
-    const result = await userService.createBarbeiro(req.body);
+async function createBarber(req, res) {
+    const result = await userService.createBarber(req.body);
     if (result.success) {
         sendSuccess(res, 201, {message: 'Usuário criado com sucesso.', userId: result.userId});
     } else {
@@ -60,8 +60,8 @@ async function createBarbeiro(req, res) {
     }
 }
 
-async function createRecepcionista(req, res) {
-    const result = await userService.createRecepcionista(req.body);
+async function createReceptionist(req, res) {
+    const result = await userService.createReceptionist(req.body);
     if (result.success) {
         sendSuccess(res, 201, {message: 'Usuário criado com sucesso.', userId: result.userId});
     } else {
@@ -69,10 +69,20 @@ async function createRecepcionista(req, res) {
     }
 }
 
-async function createGerente(req, res) {
-    const result = await userService.createGerente(req.body);
+async function createManager(req, res) {
+    const result = await userService.createManager(req.body);
     if (result.success) {
         sendSuccess(res, 201, {message: 'Usuário criado com sucesso.', userId: result.userId});
+    } else {
+        sendError(res, 400, result.errors);
+    }
+}
+
+async function updateUser(req, res) {
+    const result = await userService.updateUser(req.params.id, req.body);
+    if (result.success) {
+        const user = result.user;
+        sendSuccess(res, 200, {message: 'Usuário atualizado com sucesso.', user});
     } else {
         sendError(res, 400, result.errors);
     }
@@ -97,10 +107,11 @@ async function deleteUserById(req, res) {
 }
 
 module.exports = {
-    createCliente,
-    createBarbeiro,
-    createRecepcionista,
-    createGerente,
+    createClient,
+    createBarber,
+    createReceptionist,
+    createManager,
+    updateUser,
     getUserById,
     deleteUserById,
     getClients,
