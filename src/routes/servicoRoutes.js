@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const servicoController = require('../controllers/servicoController');
-const { authenticateToken } = require('../middlewares/authMiddleware');
+const {authenticateToken} = require('../middlewares/authMiddleware');
 
 /**
  * @swagger
@@ -28,7 +28,7 @@ const { authenticateToken } = require('../middlewares/authMiddleware');
  *               items:
  *                 $ref: '#/components/schemas/Servico'
  */
-router.get('/', authenticateToken, servicoController.getAllServicos);
+router.get('/', servicoController.getAllServicos);
 
 /**
  * @swagger
