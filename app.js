@@ -44,7 +44,6 @@ app.use('/products', produtoRoutes);
 app.use('/auth', authRoutes);
 app.use('/barber', barberRoutes);
 app.use('/servicos', servicoRoutes);
-app.use('/precos', precoRoutes);
 app.use('/presta-servico', prestaServicoRoutes);  // Ajustando a rota para kebab-case
 
 // Configura o Swagger
