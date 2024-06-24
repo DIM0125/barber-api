@@ -95,8 +95,8 @@ const agendamentoRepository = {
         if (!existingAgendamento) {
             throw new Error(`Agendamento com id ${agendamentoId} não encontrado.`);
         }
-        const sqlWithWhere = `${sql} WHERE id_agendamento = ?`;
-        const result = await query(sqlWithWhere, [values, agendamentoId]);
+        const sqlWithWhere = `${sql} WHERE id_agendamento = ${agendamentoId}`;
+        const result = await query(sqlWithWhere, values);
         return result.affectedRows;
     },
 
