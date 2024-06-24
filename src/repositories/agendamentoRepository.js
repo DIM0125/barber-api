@@ -26,6 +26,16 @@ const agendamentoRepository = {
             JOIN Servico s on asv.id_servico = s.id_servico
         `;
         const results = await query(sql);
+
+        for (const agendamento of results) {
+            const sqlServicos = `SELECT Servico.*, Preco.valor FROM Agendamento_Servicos NATURAL JOIN Servico NATURAL JOIN Preco WHERE id_agendamento = ? AND atual = 1`;
+            const resultsServicos = await query(sqlServicos, [agendamento.id_agendamento]);
+            agendamento.servicos = resultsServicos;
+
+            const sqlCliente = `SELECT * FROM Cliente JOIN Usuario ON id_usuario = id_cliente WHERE id_cliente = ?`;
+            const resultsCliente = await query(sqlCliente, [agendamento.id_cliente]);
+            agendamento.cliente = resultsCliente[0];
+        }
         return results;
     },
 
