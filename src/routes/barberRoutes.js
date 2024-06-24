@@ -77,7 +77,7 @@ const {authenticateToken} = require('../middlewares/authMiddleware');
  *                     type: string
  *                   example: ["Horário em conflito com horário já cadastrado"]
  */
-router.post('/:id/add-work-schedule', authenticateToken, barberController.addToWorkSchedule);
+router.post('/add-work-schedule', authenticateToken, barberController.addToWorkSchedule);
 
 
 /**
