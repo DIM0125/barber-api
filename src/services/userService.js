@@ -188,6 +188,23 @@ async function getBarbers() {
     }
 }
 
+async function getBarbersByService(id) {
+    try{
+        const barbers = await userRepository.getBarbersByService(id);
+        return {
+            success: true,
+            barbers
+        }
+    }
+    catch(error){
+        console.log(error);
+        return {
+            success: false,
+            errors: ['Aconteceu um erro durante a busca dos barbeiros.']
+        }
+    }
+}
+
 async function getReceptionists() {
     try{
         const receptionists = await userRepository.findReceptionists();
@@ -231,5 +248,6 @@ module.exports = {
     getClients,
     getBarbers,
     getReceptionists,
-    getManagers
+    getManagers,
+    getBarbersByService
 };

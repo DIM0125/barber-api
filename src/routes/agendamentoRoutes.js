@@ -318,7 +318,42 @@ router.get('/barbeiro/:id', authenticateToken, agendamentoController.getAgendame
  *                   type: string
  *                   example: Nenhum agendamento encontrado para a data fornecida.
  */
-
 router.get('/data/:data', authenticateToken, agendamentoController.getAgendamentosByData);
+
+/**
+ * @swagger
+ * /agendamentos/cliente/{id}:
+ *   get:
+ *     summary: Retorna todos os agendamentos de um cliente
+ *     tags: [Agendamentos]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: Lista de agendamentos do cliente
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Agendamento'
+ *       404:
+ *         description: Nenhum agendamento encontrado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Nenhum agendamento encontrado.
+ */
+router.get('/cliente/:id', authenticateToken, agendamentoController.getAgendamentosByCliente);
 
 module.exports = router;

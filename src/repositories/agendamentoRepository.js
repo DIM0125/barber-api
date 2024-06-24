@@ -21,7 +21,11 @@ const agendamentoRepository = {
     },
 
     async createAgendamento(agendamentoData) {
-        const { id_cliente, id_barbeiro, id_servico, horario_agendamento, status, avaliacao_comentario, avaliacao_nota } = agendamentoData;
+        let { id_cliente, id_barbeiro, id_servico, horario_agendamento, status, avaliacao_comentario, avaliacao_nota } = agendamentoData;
+
+        if (!status) {
+            status = 'AGENDADO';
+        }
 
         const clientExists = await this.clientExists(id_cliente);
         if (!clientExists) {
@@ -125,6 +129,11 @@ const agendamentoRepository = {
     async getAgendamentosByData(data) {
         const sql = `SELECT * FROM Agendamento WHERE DATE(horario_agendamento) = ?`;
         return await query(sql, [data]);
+    },
+
+    async getAgendamentosByCliente(clientId) {
+        const sql = `SELECT * FROM Agendamento WHERE id_cliente = ?`;
+        return await query(sql, [clientId]);
     }
 };
 

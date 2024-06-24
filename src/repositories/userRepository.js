@@ -61,22 +61,39 @@ const userRepository = {
     },
 
     async findClients() {
-        const sql = `SELECT * FROM Usuario JOIN Cliente ON id_usuario = id_cliente`;
+        const sql = `SELECT *
+                     FROM Usuario
+                              JOIN Cliente ON id_usuario = id_cliente`;
         return await query(sql);
     },
 
     async findBarbers() {
-        const sql = `SELECT * FROM Usuario JOIN Barbeiro ON id_usuario = id_barbeiro`;
+        const sql = `SELECT *
+                     FROM Usuario
+                              JOIN Barbeiro ON id_usuario = id_barbeiro`;
         return await query(sql);
     },
 
+    async getBarbersByService(serviceId) {
+        const sql = `SELECT *
+                     FROM Usuario u
+                              JOIN Barbeiro b ON u.id_usuario = b.id_barbeiro
+                              JOIN Presta_Servico p ON p.id_barbeiro = b.id_barbeiro
+                     WHERE p.id_servico = ?`;
+        return await query(sql, serviceId);
+    },
+
     async findReceptionists() {
-        const sql = `SELECT * FROM Usuario JOIN Recepcionista ON id_usuario = id_recepcionista`;
+        const sql = `SELECT *
+                     FROM Usuario
+                              JOIN Recepcionista ON id_usuario = id_recepcionista`;
         return await query(sql);
     },
 
     async findManagers() {
-        const sql = `SELECT * FROM Usuario JOIN Gerente ON id_usuario = id_gerente`;
+        const sql = `SELECT *
+                     FROM Usuario
+                              JOIN Gerente ON id_usuario = id_gerente`;
         return await query(sql);
     },
 
@@ -93,21 +110,19 @@ const userRepository = {
     },
 
     async existsByCpf(cpf) {
-        const sql = `SELECT id_usuario 
-                        FROM (
-                            SELECT id_usuario, cpf
-                            FROM Usuario 
-                            JOIN Gerente ON id_usuario = id_gerente
-                            UNION
-                            SELECT id_usuario, cpf
-                            FROM Usuario 
-                            JOIN Recepcionista ON id_usuario = id_recepcionista
-                            UNION
-                            SELECT id_usuario, cpf
-                            FROM Usuario 
-                            JOIN Barbeiro ON id_usuario = id_barbeiro
-                        ) AS employees
-                        WHERE cpf = ?;`;
+        const sql = `SELECT id_usuario
+                     FROM (SELECT id_usuario, cpf
+                           FROM Usuario
+                                    JOIN Gerente ON id_usuario = id_gerente
+                           UNION
+                           SELECT id_usuario, cpf
+                           FROM Usuario
+                                    JOIN Recepcionista ON id_usuario = id_recepcionista
+                           UNION
+                           SELECT id_usuario, cpf
+                           FROM Usuario
+                                    JOIN Barbeiro ON id_usuario = id_barbeiro) AS employees
+                     WHERE cpf = ?;`;
         const results = await query(sql, cpf);
         return results.length > 0;
     },
@@ -249,11 +264,20 @@ const userRepository = {
     },
 
     async removeWorkSchedule(barberId, workScheduleId) {
-        const sql = `DELETE FROM Barbeiro_Horarios
-                     WHERE id_barbeiro = ? AND id_horario = ?`;
+        const sql = `DELETE
+                     FROM Barbeiro_Horarios
+                     WHERE id_barbeiro = ?
+                       AND id_horario = ?`;
         const result = await query(sql, [barberId, workScheduleId]);
         return result.affectedRows > 0;
     },
+
+    async getHorarios(barberId) {
+        const sql = `SELECT *
+                     FROM Barbeiro_Horarios
+                     WHERE id_barbeiro = ?`;
+        return await query(sql, [barberId]);
+    }
 };
 
 module.exports = userRepository;

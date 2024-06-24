@@ -10,9 +10,16 @@ const {authenticateToken} = require('../middlewares/authMiddleware');
  *   description: API para gerenciamento de usuários
  */
 
+
+router.get('/clients', authenticateToken, userController.getClients);
+router.get('/managers', authenticateToken, userController.getManagers);
+router.get('/barbers', authenticateToken, userController.getBarbers);
+router.get('/barbers/service/:id', authenticateToken, userController.getBarbersByService);
+router.get('/receptionists', authenticateToken, userController.getReceptionists);
+
 /**
  * @swagger
- * /users/cliente:
+ * /users/client:
  *   post:
  *     summary: Cria um novo cliente
  *     tags: [Users]
@@ -64,13 +71,8 @@ const {authenticateToken} = require('../middlewares/authMiddleware');
  *                     type: string
  *                     example: Email já está em uso
  */
-
-router.get('/clients', authenticateToken, userController.getClients);
-router.get('/managers', authenticateToken, userController.getManagers);
-router.get('/barbers', authenticateToken, userController.getBarbers);
-router.get('/receptionists', authenticateToken, userController.getReceptionists);
-
 router.post('/client', userController.createClient);
+
 router.post('/barber', authenticateToken, userController.createBarber);
 router.post('/receptionist', authenticateToken, userController.createReceptionist);
 router.post('/manager', authenticateToken, userController.createManager);

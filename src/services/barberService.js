@@ -55,8 +55,24 @@ async function removeWorkSchedule(barberId, workScheduleId) {
     }
 }
 
+async function getHorarios(barberId) {
+    const horarios = await userRepository.getHorarios(barberId);
+    if (horarios) {
+        return {
+            success: true,
+            result: horarios
+        };
+    } else {
+        return {
+            success: false,
+            message: 'Horarios not found'
+        };
+    }
+}
+
 module.exports = {
     addToWorkSchedule,
     getWorkSchedule,
-    removeWorkSchedule
+    removeWorkSchedule,
+    getHorarios
 };
