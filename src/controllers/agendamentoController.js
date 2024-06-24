@@ -67,7 +67,7 @@ async function getAgendamentosByBarbeiro(req, res) {
 
 async function getAgendamentosByData(req, res) {
     try {
-        const { data } = req.params;
+        const {data} = req.params;
         const agendamentos = await agendamentoService.getAgendamentosByData(data);
         if (agendamentos.length > 0) {
             sendSuccess(res, 200, agendamentos);
@@ -79,6 +79,16 @@ async function getAgendamentosByData(req, res) {
     }
 }
 
+async function getAgendamentosByCliente(req, res) {
+    try {
+        const agendamentos = await agendamentoService.getAgendamentosByCliente(req.params.id);
+        sendSuccess(res, 200, agendamentos);
+    } catch (error) {
+        sendError(res, 500, error.message);
+    }
+
+}
+
 module.exports = {
     getAllAgendamentos,
     getAgendamentoById,
@@ -86,5 +96,6 @@ module.exports = {
     updateAgendamento,
     deleteAgendamento,
     getAgendamentosByBarbeiro,
-    getAgendamentosByData
+    getAgendamentosByData,
+    getAgendamentosByCliente
 };

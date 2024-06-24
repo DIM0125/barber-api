@@ -29,8 +29,18 @@ async function removeWorkSchedule(req, res) {
     }
 }
 
+async function getHorarios(req, res) {
+    const result = await barberService.getHorarios(req.params.id);
+    if (result.success) {
+        sendSuccess(res, 200, result.result);
+    } else {
+        sendError(res, 404, result.message);
+    }
+}
+
 module.exports = {
     addToWorkSchedule,
     getWorkSchedule,
-    removeWorkSchedule
+    removeWorkSchedule,
+    getHorarios
 };

@@ -33,6 +33,15 @@ async function getBarbers(req, res) {
     }
 }
 
+async function getBarbersByService(req, res) {
+    const result = await userService.getBarbersByService(req.params.id);
+    if (result.success) {
+        sendSuccess(res, 200, result.barbers);
+    } else {
+        sendError(res, 404, result.errors);
+    }
+}
+
 async function getReceptionists(req, res) {
     const result = await userService.getReceptionists();
     if (result.success) {
@@ -117,5 +126,6 @@ module.exports = {
     getClients,
     getBarbers,
     getReceptionists,
-    getManagers
+    getManagers,
+    getBarbersByService
 };
