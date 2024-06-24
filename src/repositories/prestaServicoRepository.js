@@ -2,7 +2,6 @@ const { query } = require('../utils/database');
 
 const prestaServicoRepository = {
     async createPrestaServico(id_barbeiro, id_servico) {
-        // Verificar se a associação já existe
         const checkSql = 'SELECT * FROM Presta_Servico WHERE id_barbeiro = ? AND id_servico = ?';
         const existing = await query(checkSql, [id_barbeiro, id_servico]);
         
@@ -10,7 +9,6 @@ const prestaServicoRepository = {
             throw new Error('Esta associação já existe.');
         }
         
-        // Inserir nova associação
         const sql = 'INSERT INTO Presta_Servico (id_barbeiro, id_servico) VALUES (?, ?)';
         await query(sql, [id_barbeiro, id_servico]);
     },

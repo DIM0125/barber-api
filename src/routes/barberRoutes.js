@@ -79,7 +79,6 @@ const {authenticateToken} = require('../middlewares/authMiddleware');
  */
 router.post('/add-work-schedule', authenticateToken, barberController.addToWorkSchedule);
 
-
 /**
  * @swagger
  * /barber/{id}/work-schedule:
@@ -179,5 +178,7 @@ router.get('/:id/work-schedule', authenticateToken, barberController.getWorkSche
  *                   example: Horário de trabalho não encontrado.
  */
 router.delete('/:id/work-schedule/:workScheduleId', authenticateToken, barberController.removeWorkSchedule);
+
+router.get('/:id/horarios', authenticateToken, barberController.getHorarios);
 
 module.exports = router;

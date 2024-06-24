@@ -36,6 +36,10 @@ const getAgendamentosByData = async (data) => {
     return await agendamentoRepository.getAgendamentosByData(data);
 };
 
+const getAgendamentosByCliente = async (id) => {
+    return await agendamentoRepository.getAgendamentosByCliente(id);
+}
+
 module.exports = {
     getAllAgendamentos,
     getAgendamentoById,
@@ -45,5 +49,6 @@ module.exports = {
     updateAgendamento,
     deleteAgendamento,
     getAgendamentosByBarbeiro,
-    getAgendamentosByData
+    getAgendamentosByData,
+    getAgendamentosByCliente
 };
