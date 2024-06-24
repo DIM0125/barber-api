@@ -7,7 +7,7 @@ const connection = mysql.createPool({
     password: '5ae95c2d',
     database: 'heroku_576c75a5243ebc8',
     waitForConnections: true,
-    connectionLimit: 10,
+    connectionLimit: 5,
     queueLimit: 0
 })
 
