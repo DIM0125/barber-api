@@ -1,5 +1,5 @@
 const { query } = require('../utils/database');
-const { insertInto } = require('../utils/sqlTemplates');
+const { insertInto, update } = require('../utils/sqlTemplates');
 
 const agendamentoRepository = {
 
@@ -89,19 +89,15 @@ const agendamentoRepository = {
     },
 
     async updateAgendamento(agendamentoId, newData) {
-        const { id_cliente, id_barbeiro, horario_agendamento, status, avaliacao_comentario, avaliacao_nota } = newData;
+        const {sql, values} = update('Agendamento', newData);
 
         const existingAgendamento = await this.findById(agendamentoId);
         if (!existingAgendamento) {
             throw new Error(`Agendamento com id ${agendamentoId} não encontrado.`);
         }
-
-        const sqlUpdateAgendamento = `
-            UPDATE Agendamento
-            SET id_barbeiro = ?, id_cliente = ?, horario_agendamento = ?, status = ?, avaliacao_comentario = ?, avaliacao_nota = ?
-            WHERE id_agendamento = ?
-        `;
-        await query(sqlUpdateAgendamento, [id_barbeiro, id_cliente, horario_agendamento, status, avaliacao_comentario, avaliacao_nota, agendamentoId]);
+        const sqlWithWhere = `${sql} WHERE id_agendamento = ?`;
+        const result = await query(sqlWithWhere, [values, agendamentoId]);
+        return result.affectedRows;
     },
 
     async deleteAgendamento(agendamentoId) {
