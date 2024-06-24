@@ -8,6 +8,10 @@ const getAllServicos = async () => {
   return await servicoRepository.findAll();
 };
 
+const getAllServicosByBarbeiroId = async (barbeiroId) => {
+  return await servicoRepository.findAllServicesByBarbeiroId(barbeiroId);
+};
+
 const getServicoById = async (id) => {
   return await servicoRepository.findById(id);
 };
@@ -23,6 +27,7 @@ const deleteServico = async (id) => {
 module.exports = {
   createServico,
   getAllServicos,
+  getAllServicosByBarbeiroId,
   getServicoById,
   updateServico,
   deleteServico

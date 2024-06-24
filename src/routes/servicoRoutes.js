@@ -29,6 +29,7 @@ const {authenticateToken} = require('../middlewares/authMiddleware');
  *                 $ref: '#/components/schemas/Servico'
  */
 router.get('/', servicoController.getAllServicos);
+router.get('/:id', authenticateToken, servicoController.getAllServicosByBarbeiroId);
 
 /**
  * @swagger

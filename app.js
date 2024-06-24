@@ -14,7 +14,6 @@ const produtoRoutes = require('./src/routes/produtoRoutes');
 const indexRoutes = require('./src/routes/index');
 const authRoutes = require('./src/routes/authRoutes');
 const barberRoutes = require('./src/routes/barberRoutes');
-const precoRoutes = require('./src/routes/precoRoutes');
 const prestaServicoRoutes = require('./src/routes/prestaServicoRoutes');
 const pagamentoRoutes = require('./src/routes/pagamentoRoutes');
 const { setupSwagger } = require("./src/config/swagger");

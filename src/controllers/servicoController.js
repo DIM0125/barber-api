@@ -26,6 +26,15 @@ const getAllServicos = async (req, res, next) => {
   }
 };
 
+const getAllServicosByBarbeiroId = async (req, res, next) => {
+  try {
+    const servicos = await servicoService.getAllServicosByBarbeiroId(req.params.id);
+    return sendSuccess(res, 200, servicos);
+  } catch (error) {
+    next(error);
+  }
+};
+
 const getServicoById = async (req, res, next) => {
   try {
     const servicoId = req.params.id;
@@ -68,6 +77,7 @@ const deleteServico = async (req, res, next) => {
 module.exports = {
   createServico,
   getAllServicos,
+  getAllServicosByBarbeiroId,
   getServicoById,
   updateServico,
   deleteServico

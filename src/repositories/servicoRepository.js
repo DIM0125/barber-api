@@ -16,6 +16,12 @@ const servicoRepository = {
     return results;
   },
 
+  async findAllServicesByBarbeiroId(barbeiroId) {
+    const sql = `SELECT s.*, p.valor, p.id_preco FROM Servico s NATURAL JOIN Preco p NATURAL JOIN Presta_Servico ps WHERE atual = 1 AND id_barbeiro = ?`;
+    const results = await query(sql, barbeiroId);
+    return results;
+  },
+
   async create(servicoData) {
     const columns = ['nome', 'descricao', 'duracao_estimada'];
     const values = [servicoData.nome, servicoData.descricao, servicoData.duracao_estimada];

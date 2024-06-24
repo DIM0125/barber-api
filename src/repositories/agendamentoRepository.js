@@ -6,6 +6,15 @@ const agendamentoRepository = {
     async findById(agendamentoId) {
         const sql = `SELECT * FROM Agendamento WHERE id_agendamento = ?`;
         const results = await query(sql, [agendamentoId]);
+
+        const sqlServicos = `SELECT Servico.*, Preco.valor FROM Agendamento_Servicos NATURAL JOIN Servico NATURAL JOIN Preco WHERE id_agendamento = ? AND atual = 1`;
+        const resultsServicos = await query(sqlServicos, [agendamentoId]);
+        results[0].servicos = resultsServicos;
+
+        const sqlCliente = `SELECT * FROM Cliente JOIN Usuario ON id_usuario = id_cliente WHERE id_cliente = ?`;
+        const resultsCliente = await query(sqlCliente, [results[0].id_cliente]);
+        results[0].cliente = resultsCliente[0];
+
         return results[0];
     },
 
@@ -97,7 +106,19 @@ const agendamentoRepository = {
 
     async getAgendamentosByBarbeiro(barberId) {
         const sql = `SELECT * FROM Agendamento WHERE id_barbeiro = ?`;
-        return await query(sql, [barberId]);
+        const results = await query(sql, [barberId]);
+
+        for (const agendamento of results) {
+            const sqlServicos = `SELECT Servico.*, Preco.valor FROM Agendamento_Servicos NATURAL JOIN Servico NATURAL JOIN Preco WHERE id_agendamento = ? AND atual = 1`;
+            const resultsServicos = await query(sqlServicos, [agendamento.id_agendamento]);
+            agendamento.servicos = resultsServicos;
+
+            const sqlCliente = `SELECT * FROM Cliente JOIN Usuario ON id_usuario = id_cliente WHERE id_cliente = ?`;
+            const resultsCliente = await query(sqlCliente, [agendamento.id_cliente]);
+            agendamento.cliente = resultsCliente[0];
+        }
+
+        return results;
     },
 
     async addServicoToAgendamento(agendamentoId, servicoId) {
@@ -128,12 +149,36 @@ const agendamentoRepository = {
 
     async getAgendamentosByData(data) {
         const sql = `SELECT * FROM Agendamento WHERE DATE(horario_agendamento) = ?`;
-        return await query(sql, [data]);
+        const results = await query(sql, [data]);
+
+        for (const agendamento of results) {
+            const sqlServicos = `SELECT Servico.*, Preco.valor FROM Agendamento_Servicos NATURAL JOIN Servico NATURAL JOIN Preco WHERE id_agendamento = ? AND atual = 1`;
+            const resultsServicos = await query(sqlServicos, [agendamento.id_agendamento]);
+            agendamento.servicos = resultsServicos;
+
+            const sqlCliente = `SELECT * FROM Cliente JOIN Usuario ON id_usuario = id_cliente WHERE id_cliente = ?`;
+            const resultsCliente = await query(sqlCliente, [agendamento.id_cliente]);
+            agendamento.cliente = resultsCliente[0];
+        }
+
+        return results;
     },
 
     async getAgendamentosByCliente(clientId) {
         const sql = `SELECT * FROM Agendamento WHERE id_cliente = ?`;
-        return await query(sql, [clientId]);
+        const results = await query(sql, [clientId]);
+
+        for (const agendamento of results) {
+            const sqlServicos = `SELECT Servico.*, Preco.valor FROM Agendamento_Servicos NATURAL JOIN Servico NATURAL JOIN Preco WHERE id_agendamento = ? AND atual = 1`;
+            const resultsServicos = await query(sqlServicos, [agendamento.id_agendamento]);
+            agendamento.servicos = resultsServicos;
+
+            const sqlCliente = `SELECT * FROM Cliente JOIN Usuario ON id_usuario = id_cliente WHERE id_cliente = ?`;
+            const resultsCliente = await query(sqlCliente, [agendamento.id_cliente]);
+            agendamento.cliente = resultsCliente[0];
+        }
+
+        return results;
     }
 };
 
