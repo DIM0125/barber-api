@@ -26,7 +26,27 @@ const { authenticateToken } = require('../middlewares/authMiddleware');
  *             schema:
  *               type: array
  *               items:
- *                 $ref: '#/components/schemas/Product'
+ *                 type: object
+ *                 properties:
+ *                   id:
+ *                     type: integer
+ *                     example: 1
+ *                   nome:
+ *                     type: string
+ *                     description: Nome do produto
+ *                     example: "Produto Exemplo"
+ *                   descricao:
+ *                     type: string
+ *                     description: Descrição do produto
+ *                     example: "Descrição do produto exemplo"
+ *                   quantidade_estoque:
+ *                     type: integer
+ *                     description: Quantidade em estoque
+ *                     example: 100
+ *                   quantidade_minima:
+ *                     type: integer
+ *                     description: Quantidade mínima
+ *                     example: 10
  */
 
 /**
@@ -42,7 +62,24 @@ const { authenticateToken } = require('../middlewares/authMiddleware');
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/NewProduct'
+ *             type: object
+ *             properties:
+ *               nome:
+ *                 type: string
+ *                 description: Nome do produto
+ *                 example: "Produto Exemplo"
+ *               descricao:
+ *                 type: string
+ *                 description: Descrição do produto
+ *                 example: "Descrição do produto exemplo"
+ *               quantidade_estoque:
+ *                 type: integer
+ *                 description: Quantidade em estoque
+ *                 example: 100
+ *               quantidade_minima:
+ *                 type: integer
+ *                 description: Quantidade mínima
+ *                 example: 10
  *     responses:
  *       201:
  *         description: Produto criado com sucesso
@@ -91,7 +128,27 @@ const { authenticateToken } = require('../middlewares/authMiddleware');
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Product'
+ *               type: object
+ *               properties:
+ *                 id:
+ *                   type: integer
+ *                   example: 1
+ *                 nome:
+ *                   type: string
+ *                   description: Nome do produto
+ *                   example: "Produto Exemplo"
+ *                 descricao:
+ *                   type: string
+ *                   description: Descrição do produto
+ *                   example: "Descrição do produto exemplo"
+ *                 quantidade_estoque:
+ *                   type: integer
+ *                   description: Quantidade em estoque
+ *                   example: 100
+ *                 quantidade_minima:
+ *                   type: integer
+ *                   description: Quantidade mínima
+ *                   example: 10
  *       404:
  *         description: Produto não encontrado
  *         content:
@@ -123,7 +180,25 @@ const { authenticateToken } = require('../middlewares/authMiddleware');
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/UpdateProduct'
+ *             type: object
+ *             properties:
+ *               nome:
+ *                 type: string
+ *                 description: Nome do produto
+ *               descricao:
+ *                 type: string
+ *                 description: Descrição do produto
+ *               quantidade_estoque:
+ *                 type: integer
+ *                 description: Quantidade em estoque
+ *               quantidade_minima:
+ *                 type: integer
+ *                 description: Quantidade mínima
+ *             example:
+ *               nome: "Produto Atualizado"
+ *               descricao: "Descrição do produto atualizado"
+ *               quantidade_estoque: 150
+ *               quantidade_minima: 20
  *     responses:
  *       200:
  *         description: Produto atualizado com sucesso
